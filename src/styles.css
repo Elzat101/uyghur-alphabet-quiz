@@ -1,0 +1,115 @@
+/* Apply a full-page gradient background */
+body {
+  font-family: "Arial", sans-serif;
+  background: linear-gradient(
+    135deg,
+    #007bff,
+    #00d2ff
+  ); /* Gradient blue shades */
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  color: #fff; /* Default text is white for the background */
+}
+
+/* Center the app container */
+.app,
+.start-screen,
+.score-section {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 20px;
+  background: rgba(
+    255,
+    255,
+    255,
+    0.9
+  ); /* Slightly transparent white container */
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  text-align: center; /* Center all text inside */
+  color: #333; /* Dark text for readability inside the container */
+}
+
+/* Start screen styling */
+.start-screen h1 {
+  font-size: 36px;
+  color: #007bff; /* Blue text for contrast */
+  margin-bottom: 20px;
+}
+
+.start-screen p {
+  font-size: 18px;
+  color: #333; /* Dark text for readability */
+  margin-bottom: 20px;
+}
+
+/* Question text styling */
+.question-text {
+  font-size: 36px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #007bff; /* Blue text for questions */
+}
+
+/* Button styles */
+button {
+  margin: 10px;
+  padding: 10px 20px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+  background-color: #0056b3;
+  transform: scale(1.05); /* Slight zoom on hover */
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Answer button layout and styles */
+.answer-section {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; /* Center buttons horizontally */
+}
+
+.answer-section button {
+  margin: 5px;
+  padding: 10px 15px;
+  font-size: 18px;
+  min-width: 120px;
+}
+
+/* Feedback section styling */
+.feedback-section {
+  margin-top: 20px;
+  font-size: 18px;
+  color: #333;
+}
+
+/* Score section */
+.score-section p {
+  font-size: 18px;
+  color: #333; /* Dark text for readability */
+}
+
+/* Add a restart button specific style */
+button.restart {
+  background-color: #28a745;
+}
+
+button.restart:hover {
+  background-color: #218838;
+}
