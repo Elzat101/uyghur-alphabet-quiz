@@ -1,0 +1,108 @@
+/* General Layout */
+body {
+  font-family: "Arial", sans-serif;
+  background: linear-gradient(135deg, #002855, #003f7f);
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  text-align: center;
+  color: white;
+}
+
+.app {
+  max-width: 1000px;
+  background: white;
+  padding: 50px;
+  border-radius: 15px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+  text-align: center;
+  color: black;
+}
+
+/* Learning Mode Grid */
+.grid-5 {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 20px;
+  padding: 20px;
+}
+
+/* Learning Mode Cards */
+.card {
+  background: #f1f1f1;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+  font-size: 24px;
+}
+
+/* Flashcards Centering */
+.flashcard-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 300px;
+}
+
+/* Flashcard Styling */
+.flashcard {
+  width: 400px;
+  height: 250px;
+  background: #00509e;
+  color: white;
+  font-size: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 15px;
+  cursor: pointer;
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3);
+}
+
+.flashcard:hover {
+  background: #003f7f;
+}
+
+/* Flashcard Text */
+.flashcard-text {
+  font-size: 50px;
+  text-align: center;
+}
+
+/* Question Text */
+.question-text {
+  font-size: 60px;
+  font-weight: bold;
+  color: #003f7f;
+  margin-bottom: 30px;
+}
+
+/* Buttons */
+button {
+  padding: 20px 40px;
+  font-size: 30px;
+  margin: 10px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  background: #00509e;
+  color: white;
+  transition: 0.3s;
+}
+
+button:hover {
+  background: #003f7f;
+}
+
+/* Back Button */
+.back-button {
+  background: #ff4c4c;
+}
+
+.back-button:hover {
+  background: #cc0000;
+}
