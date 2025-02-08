@@ -6,61 +6,89 @@ body {
   padding: 0;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start; /* Align items to allow for top margin */
   min-height: 100vh;
+  width: 100vw;
+  height: 100vh;
   text-align: center;
   color: white;
+  overflow-x: hidden;
 }
 
+/* Main App Container */
 .app {
-  max-width: 1000px;
+  width: 90%;
+  max-width: 1400px;
   background: white;
-  padding: 50px;
+  padding: 30px;
   border-radius: 15px;
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
   text-align: center;
   color: black;
+  margin-top: 20px; /* Added margin to prevent top cutoff */
 }
 
 /* Learning Mode Grid */
 .grid-5 {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 20px;
+  grid-template-columns: repeat(5, 1fr); /* Default to 5 columns */
+  gap: 15px;
   padding: 20px;
+  justify-content: center;
 }
 
 /* Learning Mode Cards */
 .card {
-  background: #f1f1f1;
-  padding: 20px;
-  border-radius: 10px;
+  background: #f9f9f9;
+  padding: 10px;
+  border-radius: 8px;
   text-align: center;
-  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
-  font-size: 24px;
+  box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.2);
+  font-size: 18px;
+  transition: transform 0.2s;
 }
 
-/* Flashcards Centering */
+.card:hover {
+  transform: scale(1.05);
+}
+
+/* Uyghur Text in Learning Mode */
+.uyghur {
+  font-size: 28px;
+  font-weight: bold;
+  color: #003f7f;
+  margin-bottom: 8px;
+}
+
+/* Latin Equivalent Text */
+.latin {
+  font-size: 20px;
+  color: #555;
+}
+
+/* Flashcards */
 .flashcard-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 300px;
+  height: auto;
+  min-height: 300px;
 }
 
-/* Flashcard Styling */
 .flashcard {
-  width: 400px;
-  height: 250px;
+  width: 90%;
+  max-width: 500px;
+  height: 350px;
   background: #00509e;
-  color: white;
-  font-size: 28px;
+  color: white !important; /* Ensures text is always white */
+  font-size: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 15px;
   cursor: pointer;
   box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s;
 }
 
 .flashcard:hover {
@@ -70,23 +98,28 @@ body {
 /* Flashcard Text */
 .flashcard-text {
   font-size: 50px;
+  color: white !important; /* Forces white text explicitly */
   text-align: center;
+  padding: 20px;
 }
 
-/* Question Text */
-.question-text {
+/* Quiz and Practice Question Text */
+.question-text,
+.flashcard-text {
   font-size: 60px;
   font-weight: bold;
   color: #003f7f;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 
 /* Buttons */
 button {
-  padding: 20px 40px;
-  font-size: 30px;
-  margin: 10px;
-  border-radius: 10px;
+  width: 80%;
+  max-width: 350px;
+  padding: 20px;
+  font-size: 22px;
+  margin: 10px auto;
+  border-radius: 8px;
   border: none;
   cursor: pointer;
   background: #00509e;
@@ -105,4 +138,40 @@ button:hover {
 
 .back-button:hover {
   background: #cc0000;
+}
+
+/* Responsive Adjustments for Smaller Screens */
+@media (max-width: 768px) {
+  .grid-5 {
+    grid-template-columns: repeat(3, 1fr); /* 3 columns for smaller screens */
+    gap: 10px;
+  }
+
+  .card {
+    padding: 8px;
+    font-size: 16px;
+  }
+
+  .uyghur {
+    font-size: 24px;
+  }
+
+  .latin {
+    font-size: 16px;
+  }
+
+  .question-text,
+  .flashcard-text {
+    font-size: 40px; /* Scaled down for smaller screens */
+  }
+
+  .flashcard {
+    width: 95%;
+    height: 250px;
+  }
+
+  button {
+    font-size: 18px;
+    padding: 15px;
+  }
 }
