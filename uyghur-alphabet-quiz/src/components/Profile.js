@@ -1,26 +1,27 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
-export default function Profile({ user, learningMode, onLogout, onLogin }) {
+export default function Profile({ user, onLogout }) {
+  const navigate = useNavigate();
+
   return (
-    <div className="profile-page">
+    <div className="profile">
       <h2>Profile</h2>
       {user ? (
         <>
-          <p>
-            Logged in as: <strong>{user}</strong>
-          </p>
-          <button onClick={onLogout}>Logout</button>
+          <p>Welcome, {user}!</p>
+          <button onClick={() => navigate("/stats")}>View Stats</button>
+          <button onClick={onLogout}>Log Out</button>
         </>
       ) : (
         <>
-          <p>You are a guest. Log in to save progress.</p>
-          <button onClick={onLogin}>Log In</button>
+          <p>You are a guest.</p>
+          <button onClick={() => navigate("/login")}>Log In</button>
         </>
       )}
-      <p>
-        <strong>Current Learning Mode:</strong>{" "}
-        {learningMode === "uly" ? "ULY (Uyghur Latin Alphabet)" : "Uyghur Mode"}
-      </p>
+      <button className="back-button" onClick={() => navigate("/")}>
+        Home
+      </button>
     </div>
   );
 }

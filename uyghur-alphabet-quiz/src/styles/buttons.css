@@ -1,0 +1,30 @@
+/* ============================ */
+/*          Buttons             */
+/* ============================ */
+
+button {
+  width: 80%;
+  max-width: 350px;
+  padding: 20px;
+  font-size: 22px;
+  margin: 10px auto;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  background: #00509e;
+  color: white;
+  transition: 0.3s;
+}
+
+button:hover {
+  background: #003f7f;
+}
+
+/* ✅ Back Button */
+.back-button {
+  background: #ff4c4c;
+}
+
+.back-button:hover {
+  background: #cc0000;
+}

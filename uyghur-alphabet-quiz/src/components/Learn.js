@@ -4,23 +4,33 @@ import { numbersData } from "../data/numbersQuestions";
 import { commonWords } from "../data/commonWords";
 import { ULYNumbers } from "../data/ULYNumbers";
 import { ULYCommonWords } from "../data/ULYCommonWords";
+import { useNavigate } from "react-router-dom";
 
-export default function Learn({ category, ulyMode, onBack }) {
+export default function Learn({ onBack }) {
+  const navigate = useNavigate();
+  const [category, setCategory] = useState("");
+  const [ulyMode, setUlyMode] = useState(false);
   const [dataSet, setDataSet] = useState([]);
 
   useEffect(() => {
+    const selectedCategory =
+      localStorage.getItem("selectedCategory") || "numbers";
+    const learningMode = localStorage.getItem("learningMode") || "Uyghur";
+    setCategory(selectedCategory);
+    setUlyMode(learningMode === "ULY");
+
     let newDataSet = [];
     if (!ulyMode) {
-      if (category === "letters") newDataSet = [...alphabetQuestions];
-      if (category === "numbers") newDataSet = [...numbersData];
-      if (category === "commonWords") newDataSet = [...commonWords];
+      if (selectedCategory === "letters") newDataSet = [...alphabetQuestions];
+      if (selectedCategory === "numbers") newDataSet = [...numbersData];
+      if (selectedCategory === "commonWords") newDataSet = [...commonWords];
     } else {
-      if (category === "numbers") newDataSet = [...ULYNumbers];
-      if (category === "commonWords") newDataSet = [...ULYCommonWords];
+      if (selectedCategory === "numbers") newDataSet = [...ULYNumbers];
+      if (selectedCategory === "commonWords") newDataSet = [...ULYCommonWords];
     }
 
     setDataSet(newDataSet);
-  }, [category, ulyMode]);
+  }, [ulyMode]);
 
   if (dataSet.length === 0) return <p>Loading...</p>;
 
@@ -31,13 +41,13 @@ export default function Learn({ category, ulyMode, onBack }) {
         {dataSet.map((item, index) => (
           <div key={index} className="card">
             <p className="uyghur">
-              {ulyMode ? item.uly : item.questionText || item.uyghur}
+              {item.uly ? item.uly : item.questionText || item.uyghur}
             </p>
             <p className="latin">{item.correctAnswer}</p>
           </div>
         ))}
       </div>
-      <button className="back-button" onClick={onBack}>
+      <button className="back-button" onClick={() => navigate("/home")}>
         Back
       </button>
     </div>

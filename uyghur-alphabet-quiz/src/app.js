@@ -1,13 +1,26 @@
 import React, { useState, useEffect } from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+
 import ModeSelection from "./components/ModeSelection";
-import StartScreen from "./components/StartScreen";
-import ULYHome from "./components/ULYHome";
+import Home from "./components/Home";
 import Learn from "./components/Learn";
 import Quiz from "./components/Quiz";
 import Practice from "./components/Practice";
 import Navbar from "./components/Navbar";
 import Login from "./components/Login";
 import Profile from "./components/Profile";
+import StatsSelection from "./components/StatsSelection";
+import StatsView from "./components/StatsView";
+import "./styles/general.css";
+import "./styles/navbar.css";
+import "./styles/learn.css";
+import "./styles/flashcards.css";
+import "./styles/buttons.css";
 
 export default function App() {
   const [user, setUser] = useState(null);
@@ -15,7 +28,6 @@ export default function App() {
     localStorage.getItem("learningMode") || null
   );
   const [stage, setStage] = useState("login");
-  const [selectedMode, setSelectedMode] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
 
   useEffect(() => {
@@ -44,77 +56,90 @@ export default function App() {
     setStage("home");
   };
 
-  const handleLearningModeSelection = (mode, category) => {
-    setSelectedMode(mode);
+  const handleCategorySelect = (category) => {
     setSelectedCategory(category);
-    setStage(mode);
+    setStage("statsView");
   };
 
   return (
-    <div className="app">
-      {stage !== "login" && (
-        <Navbar
-          user={user}
-          learningMode={learningMode}
-          onNavigate={setStage}
-          onSwitchMode={() => setStage("modeSelect")}
-        />
-      )}
+    <Router>
+      <Navbar />
+      <div className="app">
+        {stage !== "login" && (
+          <Navbar
+            user={user}
+            learningMode={learningMode}
+            onNavigate={setStage}
+            onSwitchMode={() => setStage("modeSelect")}
+          />
+        )}
 
-      {stage === "login" && <Login onLogin={handleLogin} />}
-      {stage === "profile" && (
-        <Profile
-          user={user}
-          learningMode={learningMode}
-          onLogout={handleLogout}
-          onLogin={() => setStage("login")}
-        />
-      )}
+        <Routes>
+          <Route path="/" element={<Navigate to="/home" />} />
+          <Route path="*" element={<Navigate to="/home" />} />
 
-      {stage === "modeSelect" && (
-        <ModeSelection onSelectMode={handleModeSelect} />
-      )}
+          <Route path="/login" element={<Login onLogin={handleLogin} />} />
 
-      {stage === "home" &&
-        (learningMode === "uyghur" ? (
-          <StartScreen onSelectMode={handleLearningModeSelection} />
-        ) : (
-          <ULYHome onSelectMode={handleLearningModeSelection} />
-        ))}
+          <Route path="/learn" element={<Learn />} />
+          <Route path="/quiz" element={<Quiz />} />
+          <Route path="/practice" element={<Practice />} />
+          <Route path="/" element={<ModeSelection />} />
 
-      {/* Uyghur Mode */}
-      {learningMode === "uyghur" && stage === "learn" && (
-        <Learn category={selectedCategory} onBack={() => setStage("home")} />
-      )}
-      {learningMode === "uyghur" && stage === "quiz" && (
-        <Quiz category={selectedCategory} onBack={() => setStage("home")} />
-      )}
-      {learningMode === "uyghur" && stage === "practice" && (
-        <Practice category={selectedCategory} onBack={() => setStage("home")} />
-      )}
+          <Route
+            path="/profile"
+            element={
+              <Profile
+                user={user}
+                learningMode={learningMode}
+                onLogout={handleLogout}
+                onLogin={() => setStage("login")}
+              />
+            }
+          />
+          <Route
+            path="/stats"
+            element={<StatsSelection learningMode={learningMode} />}
+          />
+          <Route
+            path="/stats/:category"
+            element={<StatsView learningMode={learningMode} />}
+          />
+          <Route
+            path="/modeSelect"
+            element={<ModeSelection onSelectMode={handleModeSelect} />}
+          />
+          <Route path="/home" element={<Home />} />
 
-      {/* ULY Mode */}
-      {learningMode === "uly" && stage === "learn" && (
-        <Learn
-          category={selectedCategory}
-          ulyMode={true}
-          onBack={() => setStage("home")}
-        />
-      )}
-      {learningMode === "uly" && stage === "quiz" && (
-        <Quiz
-          category={selectedCategory}
-          ulyMode={true}
-          onBack={() => setStage("home")}
-        />
-      )}
-      {learningMode === "uly" && stage === "practice" && (
-        <Practice
-          category={selectedCategory}
-          ulyMode={true}
-          onBack={() => setStage("home")}
-        />
-      )}
-    </div>
+          {/* Uyghur Mode */}
+          <Route
+            path="/learn"
+            element={
+              <Learn
+                category={selectedCategory}
+                onBack={() => setStage("home")}
+              />
+            }
+          />
+          <Route
+            path="/quiz"
+            element={
+              <Quiz
+                category={selectedCategory}
+                onBack={() => setStage("home")}
+              />
+            }
+          />
+          <Route
+            path="/practice"
+            element={
+              <Practice
+                category={selectedCategory}
+                onBack={() => setStage("home")}
+              />
+            }
+          />
+        </Routes>
+      </div>
+    </Router>
   );
 }

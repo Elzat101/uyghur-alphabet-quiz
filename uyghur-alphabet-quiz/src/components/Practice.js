@@ -1,24 +1,39 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { alphabetQuestions } from "../data/alphabetQuestions";
 import { numbersData } from "../data/numbersQuestions";
 import { commonWords } from "../data/commonWords";
 import { ULYNumbers } from "../data/ULYNumbers";
 import { ULYCommonWords } from "../data/ULYCommonWords";
+import { useNavigate } from "react-router-dom";
 
 export default function Practice({ category, ulyMode, onBack }) {
+  const navigate = useNavigate;
   const [flipped, setFlipped] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [dataSet, setDataSet] = useState(() => {
-    if (!ulyMode) {
-      if (category === "letters") return [...alphabetQuestions];
-      if (category === "numbers") return [...numbersData];
-      if (category === "commonWords") return [...commonWords];
+  const selectedCategory =
+    localStorage.getItem("selectedCategory") || "numbers";
+  const [dataSet, setDataSet] = useState([]);
+  const learningMode = localStorage.getItem("learningMode") || "Uyghur";
+
+  // ✅ **Use `useEffect` to update dataset whenever `ulyMode` or `selectedCategory` changes**
+  useEffect(() => {
+    console.log("🔄 Updating dataset in Practice.js");
+    console.log("ULY Mode:", ulyMode, "Selected Category:", selectedCategory);
+
+    let newDataSet = [];
+    if (learningMode === "Uyghur") {
+      if (selectedCategory === "letters") newDataSet = [...alphabetQuestions];
+      if (selectedCategory === "numbers") newDataSet = [...numbersData];
+      if (selectedCategory === "commonWords") newDataSet = [...commonWords];
     } else {
-      if (category === "numbers") return [...ULYNumbers];
-      if (category === "commonWords") return [...ULYCommonWords];
+      if (selectedCategory === "numbers") newDataSet = [...ULYNumbers];
+      if (selectedCategory === "commonWords") newDataSet = [...ULYCommonWords];
     }
-    return [];
-  });
+
+    console.log("✅ Dataset Loaded:", newDataSet);
+    setDataSet(newDataSet);
+    setCurrentIndex(0); // ✅ Reset index when dataset changes
+  }, [ulyMode, learningMode, selectedCategory]); // ✅ Runs whenever ULY mode or category changes
 
   const nextCard = () => {
     setFlipped(false);
@@ -34,21 +49,26 @@ export default function Practice({ category, ulyMode, onBack }) {
 
   return (
     <div className="practice">
-      <h2>Practice - {category.charAt(0).toUpperCase() + category.slice(1)}</h2>
+      <h2>
+        Practice -{" "}
+        {selectedCategory.charAt(0).toUpperCase() + selectedCategory.slice(1)}
+      </h2>
       <div className="flashcard-container">
         <div className="flashcard" onClick={() => setFlipped(!flipped)}>
           <p className="flashcard-text">
             {flipped
-              ? dataSet[currentIndex].correctAnswer
+              ? dataSet[currentIndex]?.correctAnswer || "⚠️ No Data"
               : ulyMode
-              ? dataSet[currentIndex].uly
-              : dataSet[currentIndex].questionText}
+              ? dataSet[currentIndex]?.uly || "⚠️ No ULY Data"
+              : dataSet[currentIndex]?.questionText ||
+                dataSet[currentIndex]?.uyghur ||
+                dataSet[currentIndex]?.uly}
           </p>
         </div>
       </div>
       <button onClick={nextCard}>Next</button>
       <button onClick={shuffleCards}>Shuffle</button>
-      <button className="back-button" onClick={onBack}>
+      <button className="back-button" onClick={() => navigate("/home")}>
         Back
       </button>
     </div>

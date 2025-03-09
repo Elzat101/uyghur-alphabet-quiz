@@ -1,0 +1,34 @@
+/* ============================ */
+/*    Practice Mode Flashcards  */
+/* ============================ */
+
+.flashcard-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flashcard {
+  width: 250px;
+  height: 100px;
+  background: #00509e; /* Dark blue background */
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease-in-out;
+  color: white; /* White text */
+  cursor: pointer;
+  border: none;
+}
+
+/* ✅ Button Hover Effect */
+.flashcard:hover {
+  transform: scale(1.05);
+  background: #003f7f;
+}

@@ -4,38 +4,44 @@ import { numbersData } from "../data/numbersQuestions";
 import { commonWords } from "../data/commonWords";
 import { ULYNumbers } from "../data/ULYNumbers";
 import { ULYCommonWords } from "../data/ULYCommonWords";
+import { useNavigate } from "react-router-dom";
 
-export default function Quiz({ category, ulyMode, onBack }) {
+export default function Quiz({ category, onBack }) {
+  const navigate = useNavigate();
   const [questions, setQuestions] = useState([]);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [score, setScore] = useState(0);
   const [showReview, setShowReview] = useState(false);
   const [answers, setAnswers] = useState([]);
   const [selectedAmount, setSelectedAmount] = useState(null);
+  const learningMode = localStorage.getItem("learningMode") || "Uyghur";
+  const ulyMode = learningMode === "ULY";
+  const selectedCategory =
+    localStorage.getItem("selectedCategory") || "numbers";
 
   useEffect(() => {
     let selectedQuestions = [];
     let answerPool = [];
 
-    if (!ulyMode) {
-      if (category === "letters") {
+    if (learningMode === "Uyghur") {
+      if (selectedCategory === "letters") {
         selectedQuestions = [...alphabetQuestions];
         answerPool = alphabetQuestions.map((q) => q.correctAnswer);
       }
-      if (category === "numbers") {
+      if (selectedCategory === "numbers") {
         selectedQuestions = [...numbersData];
         answerPool = numbersData.map((q) => q.correctAnswer);
       }
-      if (category === "commonWords") {
+      if (selectedCategory === "commonWords") {
         selectedQuestions = [...commonWords];
         answerPool = commonWords.map((q) => q.correctAnswer);
       }
     } else {
-      if (category === "numbers") {
+      if (selectedCategory === "numbers") {
         selectedQuestions = [...ULYNumbers];
         answerPool = ULYNumbers.map((q) => q.correctAnswer);
       }
-      if (category === "commonWords") {
+      if (selectedCategory === "commonWords") {
         selectedQuestions = [...ULYCommonWords];
         answerPool = ULYCommonWords.map((q) => q.correctAnswer);
       }
@@ -53,12 +59,62 @@ export default function Quiz({ category, ulyMode, onBack }) {
         options: generateAnswerChoices(q.correctAnswer, answerPool),
       }))
     );
-  }, [category, selectedAmount, ulyMode]);
+  }, [selectedCategory, selectedAmount, ulyMode, learningMode]);
 
   const generateAnswerChoices = (correctAnswer, answerPool) => {
     let wrongAnswers = answerPool.filter((a) => a !== correctAnswer);
     wrongAnswers = wrongAnswers.sort(() => Math.random() - 0.5).slice(0, 3);
     return [...wrongAnswers, correctAnswer].sort(() => Math.random() - 0.5);
+  };
+
+  // ✅ Load existing stats from local storage
+  const loadStats = () => {
+    const storedStats = localStorage.getItem("quizStats");
+    return storedStats ? JSON.parse(storedStats) : {};
+  };
+
+  // ✅ Save stats back to local storage
+  const saveStats = (newStats) => {
+    localStorage.setItem("quizStats", JSON.stringify(newStats));
+  };
+
+  // ✅ Track correct answers and update stats
+  const handleAnswerClick = (selectedAnswer) => {
+    setAnswers([
+      ...answers,
+      {
+        question: ulyMode
+          ? questions[currentQuestion].uly
+          : questions[currentQuestion].uyghur ||
+            questions[currentQuestion].questionText,
+        correct: questions[currentQuestion].correctAnswer,
+        selected: selectedAnswer,
+      },
+    ]);
+
+    if (selectedAnswer === questions[currentQuestion].correctAnswer) {
+      setScore(score + 1);
+
+      // ✅ Track correct answer progress
+      const stats = loadStats();
+      const key = `${ulyMode ? "ULY" : "Uyghur"}-${selectedCategory}-${
+        ulyMode
+          ? questions[currentQuestion].uly
+          : questions[currentQuestion].uyghur ||
+            questions[currentQuestion].questionText
+      }`;
+
+      if (!stats[key]) stats[key] = 0;
+      if (stats[key] < 10) stats[key] += 1; // ✅ Max at 10
+
+      saveStats(stats);
+    }
+
+    if (currentQuestion + 1 < questions.length) {
+      setCurrentQuestion(currentQuestion + 1);
+    } else {
+      setShowReview(true);
+    }
   };
 
   if (!selectedAmount) {
@@ -72,8 +128,8 @@ export default function Quiz({ category, ulyMode, onBack }) {
             </button>
           ))}
         </div>
-        <button className="back-button" onClick={onBack}>
-          Back
+        <button className="back-button" onClick={() => navigate("/home")}>
+          Exit
         </button>
       </div>
     );
@@ -82,33 +138,10 @@ export default function Quiz({ category, ulyMode, onBack }) {
   if (questions.length === 0)
     return <p className="loading-text">Loading questions...</p>;
 
-  const handleAnswerClick = (answer) => {
-    setAnswers([
-      ...answers,
-      {
-        question: ulyMode
-          ? questions[currentQuestion].uly
-          : questions[currentQuestion].questionText,
-        correct: questions[currentQuestion].correctAnswer,
-        selected: answer,
-      },
-    ]);
-
-    if (answer === questions[currentQuestion].correctAnswer) {
-      setScore(score + 1);
-    }
-
-    if (currentQuestion + 1 < questions.length) {
-      setCurrentQuestion(currentQuestion + 1);
-    } else {
-      setShowReview(true);
-    }
-  };
-
   return (
     <div className="quiz">
-      <button className="back-button" onClick={onBack}>
-        Back
+      <button className="back-button" onClick={() => navigate("/home")}>
+        🔙 Back
       </button>
 
       {showReview ? (
@@ -130,17 +163,19 @@ export default function Quiz({ category, ulyMode, onBack }) {
               </li>
             ))}
           </ul>
-          <button onClick={onBack}>Back</button>
         </div>
       ) : (
         <>
           <h2 className="big-text">
-            Quiz - {category.charAt(0).toUpperCase() + category.slice(1)}
+            Quiz -{" "}
+            {selectedCategory.charAt(0).toUpperCase() +
+              selectedCategory.slice(1)}
           </h2>
           <p className="question-text">
             {ulyMode
               ? questions[currentQuestion].uly
-              : questions[currentQuestion].questionText}
+              : questions[currentQuestion].questionText ||
+                questions[currentQuestion].uyghur}
           </p>
 
           <div className="grid">

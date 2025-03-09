@@ -1,4 +1,4 @@
-/* General Layout */
+/* General Layout 
 body {
   font-family: "Arial", sans-serif;
   background: linear-gradient(135deg, #002855, #003f7f);
@@ -13,32 +13,32 @@ body {
   overflow-x: hidden;
 }
 
-/* Main App Container */
+
 .app {
   width: 80%;
   max-width: 600px;
   background: white;
-  padding: 20px; /* Reduced padding */
+  padding: 20px; 
   border-radius: 15px;
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
   text-align: center;
   color: black;
   margin-top: 100px;
-  min-height: auto; /* Let height adjust dynamically */
+  min-height: auto; 
 }
 
-/* Learning Mode Grid */
+
 .grid-5 {
   display: grid;
-  grid-template-columns: repeat(5, 1fr); /* Default to 5 columns */
+  grid-template-columns: repeat(5, 1fr); 
   gap: 15px;
   padding: 20px;
   justify-content: center;
 }
 
-/* Learning Mode Cards */
 
-/* Flashcard Styling */
+
+
 .card {
   background: #f8f9fa;
   border-radius: 10px;
@@ -47,7 +47,7 @@ body {
   font-size: 20px;
   font-weight: bold;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  min-height: 120px; /* Fixed size */
+  min-height: 120px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -64,7 +64,7 @@ body {
   transform: scale(1.05);
 }
 
-/* Uyghur Text in Learning Mode */
+/
 .uyghur {
   font-size: 28px;
   font-weight: bold;
@@ -72,14 +72,13 @@ body {
   margin-bottom: 8px;
 }
 
-/* Latin Equivalent Text */
+
 .latin {
   font-size: 20px;
   color: #555;
 }
 
-/* Flashcards */
-/* Flashcard Sizing for Consistency */
+
 .flashcard-container {
   display: flex;
   justify-content: center;
@@ -106,14 +105,14 @@ body {
   background: #003f7f;
 }
 
-/* Flashcard Text */
+
 .flashcard-text {
   word-wrap: break-word;
   max-width: 90%;
-  color: white !important; /* Forces white text explicitly */
+  color: white !important; 
 }
 
-/* Quiz and Practice Question Text */
+
 .question-text,
 .flashcard-text {
   font-size: 60px;
@@ -122,7 +121,7 @@ body {
   margin-bottom: 20px;
 }
 
-/* Buttons */
+
 button {
   width: 80%;
   max-width: 350px;
@@ -141,7 +140,7 @@ button:hover {
   background: #003f7f;
 }
 
-/* Back Button */
+
 .back-button {
   background: #ff4c4c;
 }
@@ -150,10 +149,10 @@ button:hover {
   background: #cc0000;
 }
 
-/* Responsive Adjustments for Smaller Screens */
+
 @media (max-width: 768px) {
   .grid-5 {
-    grid-template-columns: repeat(3, 1fr); /* 3 columns for smaller screens */
+    grid-template-columns: repeat(3, 1fr); 
     gap: 10px;
   }
 
@@ -172,7 +171,7 @@ button:hover {
 
   .question-text,
   .flashcard-text {
-    font-size: 40px; /* Scaled down for smaller screens */
+    font-size: 40px; 
   }
 
   .flashcard {
@@ -186,7 +185,7 @@ button:hover {
   }
 }
 
-/* Login Screen */
+
 .login-screen {
   text-align: center;
   padding: 30px;
@@ -223,13 +222,13 @@ input {
   color: red;
 }
 
-/* Login Screen */
+
 .login-screen {
   text-align: center;
   padding: 30px;
 }
 
-/* Input Styling */
+
 .input-container {
   display: flex;
   flex-direction: column;
@@ -245,7 +244,7 @@ input {
   border: 1px solid #ccc;
 }
 
-/* Clickable text */
+
 .clickable-text {
   color: #00509e;
   text-decoration: underline;
@@ -258,26 +257,26 @@ input {
   color: #003f7f;
 }
 
-/* Error messages */
+
 .error {
   color: red;
 }
 
-/* Centering the buttons with space */
+
 .login-screen button {
-  margin: 10px 15px; /* Adds horizontal spacing */
+  margin: 10px 15px; 
   padding: 15px 30px;
   font-size: 20px;
 }
 
-/* Flexbox for even spacing */
+
 .button-container {
   display: flex;
   justify-content: center;
-  gap: 20px; /* Adjust spacing here */
+  gap: 20px; 
 }
 
-/* Navbar */
+
 .navbar {
   display: flex;
   justify-content: center;
@@ -307,13 +306,13 @@ input {
   color: white;
 }
 
-/* Profile Page */
+
 .profile-page {
   text-align: center;
-  margin-top: 80px; /* Ensures it doesn't overlap with navbar */
+  margin-top: 80px; 
 }
 
-/* Centering Login and Main Content */
+
 .login-screen,
 .start-screen,
 .profile-page {
@@ -321,7 +320,7 @@ input {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  min-height: auto; /* Adjust height dynamically */
+  min-height: auto; 
 }
 
 .profile-page button {
@@ -339,7 +338,7 @@ input {
   background: #cc0000;
 }
 
-/* Responsive Adjustments for Smaller Screens */
+
 @media (max-width: 768px) {
   .navbar {
     flex-direction: column;
@@ -356,14 +355,14 @@ input {
   .app {
     width: 90%;
     max-width: 450px;
-    padding: 15px; /* Further reduced padding */
+    padding: 15px;
     margin-top: 120px;
   }
 
   .login-screen,
   .start-screen,
   .profile-page {
-    min-height: calc(100vh - 120px); /* Adjust for navbar */
+    min-height: calc(100vh - 120px); 
   }
 
   .question-text,
@@ -372,16 +371,16 @@ input {
   }
 }
 
-/* Reduce spacing inside */
+
 .start-screen h1 {
-  margin-bottom: 10px; /* Reduce space under title */
+  margin-bottom: 10px; 
 }
 
 .start-screen p {
   margin-bottom: 15px;
 }
 
-/* Grid Layout for Learn Mode */
+
 .grid-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -390,16 +389,60 @@ input {
   padding: 10px;
 }
 
-/* ✅ Large & Medium Screens (5 Columns) */
+
 @media (min-width: 768px) {
   .grid-container {
     grid-template-columns: repeat(5, 1fr);
   }
 }
 
-/* ✅ Small Screens (3 Columns) */
+
 @media (max-width: 767px) {
   .grid-container {
     grid-template-columns: repeat(3, 1fr);
   }
+}
+*/
+
+/* ============================ */
+/*         Quiz Mode UI         */
+/* ============================ */
+
+.quiz-container {
+  text-align: center;
+  padding: 20px;
+}
+
+.question-text {
+  font-size: 32px; /* ✅ Larger font */
+  font-weight: bold;
+  color: black;
+  margin-bottom: 20px;
+}
+
+/* ✅ Answer Button Formatting */
+.answer-button {
+  width: 80%;
+  max-width: 350px;
+  padding: 15px;
+  font-size: 20px;
+  margin: 10px auto;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  background: #00509e;
+  color: white;
+  transition: background 0.3s ease-in-out;
+}
+
+.answer-button:hover {
+  background: #003f7f;
+}
+
+/* ✅ Keep Answers Spaced Properly */
+.answer-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
 }
