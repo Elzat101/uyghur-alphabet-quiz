@@ -1,0 +1,15 @@
+export const commonWords = [
+  { uyghur: "ياخشىمۇسىز", correctAnswer: "Hello" },
+  { uyghur: "رەھمەت", correctAnswer: "Thank you" },
+  { uyghur: "ئۆزىڭىزنى تونۇشتۇرۇڭ", correctAnswer: "Introduce yourself" },
+  { uyghur: "ئانا", correctAnswer: "Mother" },
+  { uyghur: "ئاتا", correctAnswer: "Father" },
+  { uyghur: "بىلىم", correctAnswer: "Knowledge" },
+  { uyghur: "كۈندىلىك", correctAnswer: "Diary" },
+  { uyghur: "يېقىن", correctAnswer: "Near" },
+  { uyghur: "يېڭى", correctAnswer: "New" },
+  { uyghur: "ياز", correctAnswer: "Summer" },
+  { uyghur: "قىش", correctAnswer: "Winter" },
+  { uyghur: "كۈن", correctAnswer: "Day" },
+  { uyghur: "كېچ", correctAnswer: "Evening" },
+];

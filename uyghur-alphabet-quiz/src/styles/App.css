@@ -1,0 +1,405 @@
+/* General Layout */
+body {
+  font-family: "Arial", sans-serif;
+  background: linear-gradient(135deg, #002855, #003f7f);
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  text-align: center;
+  color: white;
+  overflow-x: hidden;
+}
+
+/* Main App Container */
+.app {
+  width: 80%;
+  max-width: 600px;
+  background: white;
+  padding: 20px; /* Reduced padding */
+  border-radius: 15px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+  text-align: center;
+  color: black;
+  margin-top: 100px;
+  min-height: auto; /* Let height adjust dynamically */
+}
+
+/* Learning Mode Grid */
+.grid-5 {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* Default to 5 columns */
+  gap: 15px;
+  padding: 20px;
+  justify-content: center;
+}
+
+/* Learning Mode Cards */
+
+/* Flashcard Styling */
+.card {
+  background: #f8f9fa;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  min-height: 120px; /* Fixed size */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.card p {
+  margin: 5px 0;
+  text-align: center;
+  word-wrap: break-word;
+}
+
+.card:hover {
+  transform: scale(1.05);
+}
+
+/* Uyghur Text in Learning Mode */
+.uyghur {
+  font-size: 28px;
+  font-weight: bold;
+  color: #003f7f;
+  margin-bottom: 8px;
+}
+
+/* Latin Equivalent Text */
+.latin {
+  font-size: 20px;
+  color: #555;
+}
+
+/* Flashcards */
+/* Flashcard Sizing for Consistency */
+.flashcard-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flashcard {
+  width: 250px;
+  height: 150px;
+  background: #f8f9fa;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  font-size: 22px;
+  font-weight: bold;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease-in-out;
+}
+
+.flashcard:hover {
+  background: #003f7f;
+}
+
+/* Flashcard Text */
+.flashcard-text {
+  word-wrap: break-word;
+  max-width: 90%;
+  color: white !important; /* Forces white text explicitly */
+}
+
+/* Quiz and Practice Question Text */
+.question-text,
+.flashcard-text {
+  font-size: 60px;
+  font-weight: bold;
+  color: #003f7f;
+  margin-bottom: 20px;
+}
+
+/* Buttons */
+button {
+  width: 80%;
+  max-width: 350px;
+  padding: 20px;
+  font-size: 22px;
+  margin: 10px auto;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  background: #00509e;
+  color: white;
+  transition: 0.3s;
+}
+
+button:hover {
+  background: #003f7f;
+}
+
+/* Back Button */
+.back-button {
+  background: #ff4c4c;
+}
+
+.back-button:hover {
+  background: #cc0000;
+}
+
+/* Responsive Adjustments for Smaller Screens */
+@media (max-width: 768px) {
+  .grid-5 {
+    grid-template-columns: repeat(3, 1fr); /* 3 columns for smaller screens */
+    gap: 10px;
+  }
+
+  .card {
+    padding: 8px;
+    font-size: 16px;
+  }
+
+  .uyghur {
+    font-size: 24px;
+  }
+
+  .latin {
+    font-size: 16px;
+  }
+
+  .question-text,
+  .flashcard-text {
+    font-size: 40px; /* Scaled down for smaller screens */
+  }
+
+  .flashcard {
+    width: 95%;
+    height: 250px;
+  }
+
+  button {
+    font-size: 18px;
+    padding: 15px;
+  }
+}
+
+/* Login Screen */
+.login-screen {
+  text-align: center;
+  padding: 30px;
+}
+
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+input {
+  width: 80%;
+  max-width: 300px;
+  padding: 10px;
+  margin: 5px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.logout-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: red;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.error {
+  color: red;
+}
+
+/* Login Screen */
+.login-screen {
+  text-align: center;
+  padding: 30px;
+}
+
+/* Input Styling */
+.input-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+input {
+  width: 80%;
+  max-width: 300px;
+  padding: 10px;
+  margin: 5px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+/* Clickable text */
+.clickable-text {
+  color: #00509e;
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+.clickable-text:hover {
+  color: #003f7f;
+}
+
+/* Error messages */
+.error {
+  color: red;
+}
+
+/* Centering the buttons with space */
+.login-screen button {
+  margin: 10px 15px; /* Adds horizontal spacing */
+  padding: 15px 30px;
+  font-size: 20px;
+}
+
+/* Flexbox for even spacing */
+.button-container {
+  display: flex;
+  justify-content: center;
+  gap: 20px; /* Adjust spacing here */
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  padding: 15px;
+  background: #00509e;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  left: 0;
+  z-index: 1000;
+}
+
+.navbar button {
+  background: #ffffff;
+  color: #00509e;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.navbar button:hover {
+  background: #003f7f;
+  color: white;
+}
+
+/* Profile Page */
+.profile-page {
+  text-align: center;
+  margin-top: 80px; /* Ensures it doesn't overlap with navbar */
+}
+
+/* Centering Login and Main Content */
+.login-screen,
+.start-screen,
+.profile-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: auto; /* Adjust height dynamically */
+}
+
+.profile-page button {
+  background: #ff4c4c;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 18px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.profile-page button:hover {
+  background: #cc0000;
+}
+
+/* Responsive Adjustments for Smaller Screens */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+  }
+
+  .navbar button {
+    width: 100%;
+    max-width: 200px;
+    margin: 5px 0;
+  }
+
+  .app {
+    width: 90%;
+    max-width: 450px;
+    padding: 15px; /* Further reduced padding */
+    margin-top: 120px;
+  }
+
+  .login-screen,
+  .start-screen,
+  .profile-page {
+    min-height: calc(100vh - 120px); /* Adjust for navbar */
+  }
+
+  .question-text,
+  .flashcard-text {
+    font-size: 40px;
+  }
+}
+
+/* Reduce spacing inside */
+.start-screen h1 {
+  margin-bottom: 10px; /* Reduce space under title */
+}
+
+.start-screen p {
+  margin-bottom: 15px;
+}
+
+/* Grid Layout for Learn Mode */
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 15px;
+  justify-content: center;
+  padding: 10px;
+}
+
+/* ✅ Large & Medium Screens (5 Columns) */
+@media (min-width: 768px) {
+  .grid-container {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+/* ✅ Small Screens (3 Columns) */
+@media (max-width: 767px) {
+  .grid-container {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
