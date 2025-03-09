@@ -17,9 +17,6 @@ export default function Practice({ category, ulyMode, onBack }) {
 
   // ✅ **Use `useEffect` to update dataset whenever `ulyMode` or `selectedCategory` changes**
   useEffect(() => {
-    console.log("🔄 Updating dataset in Practice.js");
-    console.log("ULY Mode:", ulyMode, "Selected Category:", selectedCategory);
-
     let newDataSet = [];
     if (learningMode === "Uyghur") {
       if (selectedCategory === "letters") newDataSet = [...alphabetQuestions];
@@ -30,7 +27,6 @@ export default function Practice({ category, ulyMode, onBack }) {
       if (selectedCategory === "commonWords") newDataSet = [...ULYCommonWords];
     }
 
-    console.log("✅ Dataset Loaded:", newDataSet);
     setDataSet(newDataSet);
     setCurrentIndex(0); // ✅ Reset index when dataset changes
   }, [ulyMode, learningMode, selectedCategory]); // ✅ Runs whenever ULY mode or category changes
