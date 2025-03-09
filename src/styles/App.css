@@ -1,4 +1,4 @@
-/* General Layout */
+/* General Layout 
 body {
   font-family: "Arial", sans-serif;
   background: linear-gradient(135deg, #002855, #003f7f);
@@ -6,53 +6,65 @@ body {
   padding: 0;
   display: flex;
   justify-content: center;
-  align-items: flex-start; /* Align items to allow for top margin */
+  align-items: center;
   min-height: 100vh;
-  width: 100vw;
-  height: 100vh;
   text-align: center;
   color: white;
   overflow-x: hidden;
 }
 
-/* Main App Container */
+
 .app {
-  width: 90%;
-  max-width: 1400px;
+  width: 80%;
+  max-width: 600px;
   background: white;
-  padding: 30px;
+  padding: 20px; 
   border-radius: 15px;
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
   text-align: center;
   color: black;
-  margin-top: 20px; /* Added margin to prevent top cutoff */
+  margin-top: 100px;
+  min-height: auto; 
 }
 
-/* Learning Mode Grid */
+
 .grid-5 {
   display: grid;
-  grid-template-columns: repeat(5, 1fr); /* Default to 5 columns */
+  grid-template-columns: repeat(5, 1fr); 
   gap: 15px;
   padding: 20px;
   justify-content: center;
 }
 
-/* Learning Mode Cards */
+
+
+
 .card {
-  background: #f9f9f9;
-  padding: 10px;
-  border-radius: 8px;
+  background: #f8f9fa;
+  border-radius: 10px;
+  padding: 20px;
   text-align: center;
-  box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.2);
-  font-size: 18px;
-  transition: transform 0.2s;
+  font-size: 20px;
+  font-weight: bold;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.card p {
+  margin: 5px 0;
+  text-align: center;
+  word-wrap: break-word;
 }
 
 .card:hover {
   transform: scale(1.05);
 }
 
-/* Uyghur Text in Learning Mode */
+/
 .uyghur {
   font-size: 28px;
   font-weight: bold;
@@ -60,50 +72,47 @@ body {
   margin-bottom: 8px;
 }
 
-/* Latin Equivalent Text */
+
 .latin {
   font-size: 20px;
   color: #555;
 }
 
-/* Flashcards */
+
 .flashcard-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: auto;
-  min-height: 300px;
 }
 
 .flashcard {
-  width: 90%;
-  max-width: 500px;
-  height: 350px;
-  background: #00509e;
-  color: white !important; /* Ensures text is always white */
-  font-size: 50px;
+  width: 250px;
+  height: 150px;
+  background: #f8f9fa;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  font-size: 22px;
+  font-weight: bold;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 15px;
-  cursor: pointer;
-  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3);
-  transition: transform 0.2s;
+  transition: transform 0.3s ease-in-out;
 }
 
 .flashcard:hover {
   background: #003f7f;
 }
 
-/* Flashcard Text */
+
 .flashcard-text {
-  font-size: 50px;
-  color: white !important; /* Forces white text explicitly */
-  text-align: center;
-  padding: 20px;
+  word-wrap: break-word;
+  max-width: 90%;
+  color: white !important; 
 }
 
-/* Quiz and Practice Question Text */
+
 .question-text,
 .flashcard-text {
   font-size: 60px;
@@ -112,7 +121,7 @@ body {
   margin-bottom: 20px;
 }
 
-/* Buttons */
+
 button {
   width: 80%;
   max-width: 350px;
@@ -131,7 +140,7 @@ button:hover {
   background: #003f7f;
 }
 
-/* Back Button */
+
 .back-button {
   background: #ff4c4c;
 }
@@ -140,10 +149,10 @@ button:hover {
   background: #cc0000;
 }
 
-/* Responsive Adjustments for Smaller Screens */
+
 @media (max-width: 768px) {
   .grid-5 {
-    grid-template-columns: repeat(3, 1fr); /* 3 columns for smaller screens */
+    grid-template-columns: repeat(3, 1fr); 
     gap: 10px;
   }
 
@@ -162,7 +171,7 @@ button:hover {
 
   .question-text,
   .flashcard-text {
-    font-size: 40px; /* Scaled down for smaller screens */
+    font-size: 40px; 
   }
 
   .flashcard {
@@ -174,4 +183,266 @@ button:hover {
     font-size: 18px;
     padding: 15px;
   }
+}
+
+
+.login-screen {
+  text-align: center;
+  padding: 30px;
+}
+
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+input {
+  width: 80%;
+  max-width: 300px;
+  padding: 10px;
+  margin: 5px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.logout-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: red;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.error {
+  color: red;
+}
+
+
+.login-screen {
+  text-align: center;
+  padding: 30px;
+}
+
+
+.input-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+input {
+  width: 80%;
+  max-width: 300px;
+  padding: 10px;
+  margin: 5px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+
+.clickable-text {
+  color: #00509e;
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+.clickable-text:hover {
+  color: #003f7f;
+}
+
+
+.error {
+  color: red;
+}
+
+
+.login-screen button {
+  margin: 10px 15px; 
+  padding: 15px 30px;
+  font-size: 20px;
+}
+
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  gap: 20px; 
+}
+
+
+.navbar {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  padding: 15px;
+  background: #00509e;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  left: 0;
+  z-index: 1000;
+}
+
+.navbar button {
+  background: #ffffff;
+  color: #00509e;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.navbar button:hover {
+  background: #003f7f;
+  color: white;
+}
+
+
+.profile-page {
+  text-align: center;
+  margin-top: 80px; 
+}
+
+
+.login-screen,
+.start-screen,
+.profile-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: auto; 
+}
+
+.profile-page button {
+  background: #ff4c4c;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 18px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.profile-page button:hover {
+  background: #cc0000;
+}
+
+
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+  }
+
+  .navbar button {
+    width: 100%;
+    max-width: 200px;
+    margin: 5px 0;
+  }
+
+  .app {
+    width: 90%;
+    max-width: 450px;
+    padding: 15px;
+    margin-top: 120px;
+  }
+
+  .login-screen,
+  .start-screen,
+  .profile-page {
+    min-height: calc(100vh - 120px); 
+  }
+
+  .question-text,
+  .flashcard-text {
+    font-size: 40px;
+  }
+}
+
+
+.start-screen h1 {
+  margin-bottom: 10px; 
+}
+
+.start-screen p {
+  margin-bottom: 15px;
+}
+
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 15px;
+  justify-content: center;
+  padding: 10px;
+}
+
+
+@media (min-width: 768px) {
+  .grid-container {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+
+@media (max-width: 767px) {
+  .grid-container {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+*/
+
+/* ============================ */
+/*         Quiz Mode UI         */
+/* ============================ */
+
+.quiz-container {
+  text-align: center;
+  padding: 20px;
+}
+
+.question-text {
+  font-size: 32px; /* ✅ Larger font */
+  font-weight: bold;
+  color: black;
+  margin-bottom: 20px;
+}
+
+/* ✅ Answer Button Formatting */
+.answer-button {
+  width: 80%;
+  max-width: 350px;
+  padding: 15px;
+  font-size: 20px;
+  margin: 10px auto;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  background: #00509e;
+  color: white;
+  transition: background 0.3s ease-in-out;
+}
+
+.answer-button:hover {
+  background: #003f7f;
+}
+
+/* ✅ Keep Answers Spaced Properly */
+.answer-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
 }

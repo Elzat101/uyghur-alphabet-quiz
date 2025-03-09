@@ -1,24 +1,23 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
-export default function ModeSelection({
-  selectedMode,
-  onSelectCategory,
-  onBack,
-}) {
+export default function ModeSelection() {
+  const navigate = useNavigate();
+
+  const handleSelectMode = (mode) => {
+    localStorage.setItem("learningMode", mode);
+    if (mode === "Uyghur") {
+      navigate("/UyghurHome"); // ✅ Navigates to Uyghur Home
+    } else {
+      navigate("/ULYHome"); // ✅ Navigates to ULY Home
+    }
+  };
+
   return (
     <div className="mode-selection">
-      <h2>Choose a Category</h2>
-      <p>What do you want to {selectedMode}?</p>
-      <div className="options">
-        <button onClick={() => onSelectCategory("letters")}>🔤 Letters</button>
-        <button onClick={() => onSelectCategory("numbers")}>🔢 Numbers</button>
-        <button onClick={() => onSelectCategory("phrases")}>
-          🗣️ Common Phrases
-        </button>
-      </div>
-      <button className="back-button" onClick={onBack}>
-        🔙 Back
-      </button>
+      <h2>Select Your Learning Mode</h2>
+      <button onClick={() => handleSelectMode("Uyghur")}>Uyghur Mode</button>
+      <button onClick={() => handleSelectMode("ULY")}>ULY Mode</button>
     </div>
   );
 }
