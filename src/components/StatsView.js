@@ -6,6 +6,15 @@ import { commonWords } from "../data/commonWords";
 import { ULYNumbers } from "../data/ULYNumbers";
 import { ULYCommonWords } from "../data/ULYCommonWords";
 
+const ulyCategories = [
+  { name: "Food", key: "food" },
+  { name: "Animals", key: "animals" },
+  { name: "School", key: "school" },
+  { name: "Family", key: "family" },
+  { name: "Greetings", key: "greetings" },
+  { name: "Verbs", key: "verbs" },
+];
+
 export default function StatsView() {
   const navigate = useNavigate();
   const { category } = useParams();
@@ -17,18 +26,18 @@ export default function StatsView() {
     const storedStats = JSON.parse(localStorage.getItem("quizStats")) || {};
     setStats(storedStats);
 
-    // ✅ Load correct dataset
     if (learningMode === "Uyghur") {
       if (category === "letters") setData([...alphabetQuestions]);
-      if (category === "numbers") setData([...numbersData]);
-      if (category === "commonWords") setData([...commonWords]);
+      else if (category === "numbers") setData([...numbersData]);
+      else if (category === "commonWords") setData([...commonWords]);
     } else {
       if (category === "numbers") setData([...ULYNumbers]);
-      if (category === "commonWords") setData([...ULYCommonWords]);
+      else if (category === "commonWords")
+        setData([]); // grid view for subcategories
+      else if (ULYCommonWords[category]) setData([...ULYCommonWords[category]]);
     }
   }, [category, learningMode]);
 
-  // ✅ Reset Stats for Displayed Category
   const resetStats = () => {
     const updatedStats = { ...stats };
     data.forEach((item) => {
@@ -40,6 +49,35 @@ export default function StatsView() {
     setStats(updatedStats);
     localStorage.setItem("quizStats", JSON.stringify(updatedStats));
   };
+
+  const renderGridSelector = () => (
+    <div className="p-4">
+      <h2 className="text-2xl font-bold mb-4 text-center">Select a Category</h2>
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+        {ulyCategories.map((cat) => (
+          <button
+            key={cat.key}
+            onClick={() => navigate(`/stats/${cat.key}`)}
+            className="bg-blue-700 text-white py-3 px-4 rounded-2xl shadow hover:bg-blue-800 transition"
+          >
+            {cat.name}
+          </button>
+        ))}
+      </div>
+      <div className="mt-6 text-center">
+        <button
+          onClick={() => navigate("/stats")}
+          className="text-sm text-gray-600 underline"
+        >
+          Back
+        </button>
+      </div>
+    </div>
+  );
+
+  if (learningMode === "ULY" && category === "commonWords") {
+    return renderGridSelector();
+  }
 
   return (
     <div className="stats-view">

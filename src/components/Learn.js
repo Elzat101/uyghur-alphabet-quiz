@@ -26,7 +26,9 @@ export default function Learn({ onBack }) {
       if (selectedCategory === "commonWords") newDataSet = [...commonWords];
     } else {
       if (selectedCategory === "numbers") newDataSet = [...ULYNumbers];
-      if (selectedCategory === "commonWords") newDataSet = [...ULYCommonWords];
+      else if (ULYCommonWords[selectedCategory]) {
+        newDataSet = [...ULYCommonWords[selectedCategory]];
+      }
     }
 
     setDataSet(newDataSet);

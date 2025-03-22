@@ -12,8 +12,16 @@ export default function Home() {
   }, []);
 
   const handleSelectCategory = (category, mode) => {
-    localStorage.setItem("selectedCategory", category); // ✅ Update localStorage
-    navigate(`/${mode}`); // ✅ Navigate to the selected mode (learn, quiz, or practice)
+    localStorage.setItem("selectedCategory", category);
+    localStorage.setItem("learningType", mode);
+
+    const currentMode = localStorage.getItem("learningMode");
+
+    if (currentMode === "ULY" && category === "commonWords") {
+      navigate("/select-category");
+    } else {
+      navigate(`/${mode}`);
+    }
   };
 
   return (

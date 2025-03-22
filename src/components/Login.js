@@ -1,16 +1,19 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "../styles/buttons.css";
+import "../styles/general.css";
 
 export default function Login({ onLogin }) {
-  const [screen, setScreen] = useState("start"); // Tracks which screen is shown
+  const [screen, setScreen] = useState("start");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [resetUsername, setResetUsername] = useState("");
 
+  const navigate = useNavigate();
   const users = JSON.parse(localStorage.getItem("users")) || {};
 
-  // Reset input fields when switching screens
   const resetFields = () => {
     setUsername("");
     setPassword("");
@@ -19,16 +22,15 @@ export default function Login({ onLogin }) {
     setError("");
   };
 
-  // Handle Login
   const handleLogin = () => {
     if (users[username] === password) {
       onLogin(username);
+      navigate("/home");
     } else {
       setError("Invalid username or password");
     }
   };
 
-  // Handle Account Creation
   const handleCreateAccount = () => {
     if (users[username]) {
       setError("Username already exists");
@@ -38,10 +40,10 @@ export default function Login({ onLogin }) {
       users[username] = password;
       localStorage.setItem("users", JSON.stringify(users));
       onLogin(username);
+      navigate("/home");
     }
   };
 
-  // Handle Reset Request (Step 1)
   const handleResetRequest = () => {
     if (users[resetUsername]) {
       setScreen("resetPassword");
@@ -51,7 +53,6 @@ export default function Login({ onLogin }) {
     }
   };
 
-  // Handle Password Reset (Step 2)
   const handlePasswordReset = () => {
     if (password !== confirmPassword) {
       setError("Passwords do not match");
@@ -64,12 +65,20 @@ export default function Login({ onLogin }) {
   };
 
   return (
-    <div className="login-screen">
+    <div className="login-screen app">
       {screen === "start" && (
         <>
           <h1>Welcome to the Uyghur Language Learning App</h1>
+          <p>Choose how you'd like to begin:</p>
           <div className="button-container">
-            <button onClick={() => onLogin("guest")}>Continue as Guest</button>
+            <button
+              onClick={() => {
+                onLogin("guest");
+                navigate("/home");
+              }}
+            >
+              Continue as Guest
+            </button>
             <button
               onClick={() => {
                 setScreen("login");
@@ -124,8 +133,7 @@ export default function Login({ onLogin }) {
             }}
           >
             Back
-          </p>{" "}
-          {/* New Back Button */}
+          </p>
           {error && <p className="error">{error}</p>}
         </>
       )}
@@ -176,7 +184,7 @@ export default function Login({ onLogin }) {
             value={resetUsername}
             onChange={(e) => setResetUsername(e.target.value)}
           />
-          <button onClick={handleResetRequest}>Reset</button>
+          <button onClick={handleResetRequest}>Next</button>
           <p
             className="clickable-text"
             onClick={() => {

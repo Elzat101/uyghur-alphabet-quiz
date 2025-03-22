@@ -14,6 +14,9 @@ export default function Quiz({ category, onBack }) {
   const [showReview, setShowReview] = useState(false);
   const [answers, setAnswers] = useState([]);
   const [selectedAmount, setSelectedAmount] = useState(null);
+  const [selectedAnswer, setSelectedAnswer] = useState(null);
+  const [showFeedback, setShowFeedback] = useState(false);
+
   const learningMode = localStorage.getItem("learningMode") || "Uyghur";
   const ulyMode = learningMode === "ULY";
   const selectedCategory =
@@ -41,9 +44,11 @@ export default function Quiz({ category, onBack }) {
         selectedQuestions = [...ULYNumbers];
         answerPool = ULYNumbers.map((q) => q.correctAnswer);
       }
-      if (selectedCategory === "commonWords") {
-        selectedQuestions = [...ULYCommonWords];
-        answerPool = ULYCommonWords.map((q) => q.correctAnswer);
+      if (ULYCommonWords[selectedCategory]) {
+        selectedQuestions = [...ULYCommonWords[selectedCategory]];
+        answerPool = ULYCommonWords[selectedCategory].map(
+          (q) => q.correctAnswer
+        );
       }
     }
 
@@ -67,51 +72,53 @@ export default function Quiz({ category, onBack }) {
     return [...wrongAnswers, correctAnswer].sort(() => Math.random() - 0.5);
   };
 
-  // ✅ Load existing stats from local storage
   const loadStats = () => {
     const storedStats = localStorage.getItem("quizStats");
     return storedStats ? JSON.parse(storedStats) : {};
   };
 
-  // ✅ Save stats back to local storage
   const saveStats = (newStats) => {
     localStorage.setItem("quizStats", JSON.stringify(newStats));
   };
 
-  // ✅ Track correct answers and update stats
-  const handleAnswerClick = (selectedAnswer) => {
+  const handleAnswerClick = (answer) => {
+    if (selectedAnswer) return; // Prevent double-click
+
+    const current = questions[currentQuestion];
+    const isCorrect = answer === current.correctAnswer;
+
+    setSelectedAnswer(answer);
+    setShowFeedback(true);
+
     setAnswers([
       ...answers,
       {
         question: ulyMode
-          ? questions[currentQuestion].uly
-          : questions[currentQuestion].uyghur ||
-            questions[currentQuestion].questionText,
-        correct: questions[currentQuestion].correctAnswer,
-        selected: selectedAnswer,
+          ? current.uly
+          : current.uyghur || current.questionText,
+        correct: current.correctAnswer,
+        selected: answer,
       },
     ]);
 
-    if (selectedAnswer === questions[currentQuestion].correctAnswer) {
+    if (isCorrect) {
       setScore(score + 1);
-
-      // ✅ Track correct answer progress
       const stats = loadStats();
       const key = `${ulyMode ? "ULY" : "Uyghur"}-${selectedCategory}-${
-        ulyMode
-          ? questions[currentQuestion].uly
-          : questions[currentQuestion].uyghur ||
-            questions[currentQuestion].questionText
+        ulyMode ? current.uly : current.uyghur || current.questionText
       }`;
-
       if (!stats[key]) stats[key] = 0;
-      if (stats[key] < 10) stats[key] += 1; // ✅ Max at 10
-
+      if (stats[key] < 10) stats[key] += 1;
       saveStats(stats);
     }
+  };
 
-    if (currentQuestion + 1 < questions.length) {
-      setCurrentQuestion(currentQuestion + 1);
+  const handleNext = () => {
+    const next = currentQuestion + 1;
+    if (next < questions.length) {
+      setCurrentQuestion(next);
+      setSelectedAnswer(null);
+      setShowFeedback(false);
     } else {
       setShowReview(true);
     }
@@ -138,12 +145,13 @@ export default function Quiz({ category, onBack }) {
   if (questions.length === 0)
     return <p className="loading-text">Loading questions...</p>;
 
+  const currentQ = questions[currentQuestion];
+  const questionText = ulyMode
+    ? currentQ.uly
+    : currentQ.questionText || currentQ.uyghur;
+
   return (
     <div className="quiz">
-      <button className="back-button" onClick={() => navigate("/home")}>
-        🔙 Back
-      </button>
-
       {showReview ? (
         <div className="review">
           <h2 className="big-text">
@@ -163,6 +171,9 @@ export default function Quiz({ category, onBack }) {
               </li>
             ))}
           </ul>
+          <button className="back-button" onClick={() => navigate("/home")}>
+            Back
+          </button>
         </div>
       ) : (
         <>
@@ -171,20 +182,43 @@ export default function Quiz({ category, onBack }) {
             {selectedCategory.charAt(0).toUpperCase() +
               selectedCategory.slice(1)}
           </h2>
-          <p className="question-text">
-            {ulyMode
-              ? questions[currentQuestion].uly
-              : questions[currentQuestion].questionText ||
-                questions[currentQuestion].uyghur}
-          </p>
+          <p className="question-text">{questionText}</p>
 
           <div className="grid">
-            {questions[currentQuestion].options.map((option, index) => (
-              <button key={index} onClick={() => handleAnswerClick(option)}>
+            {currentQ.options.map((option, index) => (
+              <button
+                key={index}
+                onClick={() => handleAnswerClick(option)}
+                disabled={!!selectedAnswer}
+                style={{
+                  backgroundColor:
+                    showFeedback && option === currentQ.correctAnswer
+                      ? "#28a745"
+                      : showFeedback && option === selectedAnswer
+                      ? "#dc3545"
+                      : "",
+                }}
+              >
                 {option}
               </button>
             ))}
           </div>
+
+          {showFeedback && (
+            <div className="feedback">
+              <p>
+                {selectedAnswer === currentQ.correctAnswer
+                  ? "✅ Correct!"
+                  : "❌ Incorrect."}
+              </p>
+              {selectedAnswer !== currentQ.correctAnswer && (
+                <p>
+                  Correct Answer: <strong>{currentQ.correctAnswer}</strong>
+                </p>
+              )}
+              <button onClick={handleNext}>Next</button>
+            </div>
+          )}
         </>
       )}
     </div>

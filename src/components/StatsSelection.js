@@ -8,6 +8,7 @@ export default function StatsSelection() {
   return (
     <div className="stats-selection">
       <h2>Select a Category</h2>
+
       {learningMode === "Uyghur" && (
         <button onClick={() => navigate("/stats/letters")}>Letters</button>
       )}

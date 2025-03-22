@@ -7,7 +7,7 @@ import { ULYCommonWords } from "../data/ULYCommonWords";
 import { useNavigate } from "react-router-dom";
 
 export default function Practice({ category, ulyMode, onBack }) {
-  const navigate = useNavigate;
+  const navigate = useNavigate();
   const [flipped, setFlipped] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const selectedCategory =
@@ -24,7 +24,9 @@ export default function Practice({ category, ulyMode, onBack }) {
       if (selectedCategory === "commonWords") newDataSet = [...commonWords];
     } else {
       if (selectedCategory === "numbers") newDataSet = [...ULYNumbers];
-      if (selectedCategory === "commonWords") newDataSet = [...ULYCommonWords];
+      if (ULYCommonWords[selectedCategory]) {
+        newDataSet = [...ULYCommonWords[selectedCategory]];
+      }
     }
 
     setDataSet(newDataSet);

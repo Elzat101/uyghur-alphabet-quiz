@@ -16,6 +16,8 @@ import Login from "./components/Login";
 import Profile from "./components/Profile";
 import StatsSelection from "./components/StatsSelection";
 import StatsView from "./components/StatsView";
+import SelectCategoryScreen from "./components/SelectCategoryScreen";
+import StatsCommonWordsSelect from "./components/StatsCommonWordsSelect"; // adjust path
 import "./styles/general.css";
 import "./styles/navbar.css";
 import "./styles/learn.css";
@@ -56,11 +58,6 @@ export default function App() {
     setStage("home");
   };
 
-  const handleCategorySelect = (category) => {
-    setSelectedCategory(category);
-    setStage("statsView");
-  };
-
   return (
     <Router>
       <Navbar />
@@ -78,6 +75,7 @@ export default function App() {
           <Route path="/" element={<Navigate to="/home" />} />
           <Route path="*" element={<Navigate to="/home" />} />
 
+          <Route path="/select-category" element={<SelectCategoryScreen />} />
           <Route path="/login" element={<Login onLogin={handleLogin} />} />
 
           <Route path="/learn" element={<Learn />} />
@@ -128,6 +126,10 @@ export default function App() {
                 onBack={() => setStage("home")}
               />
             }
+          />
+          <Route
+            path="/stats/commonWordsSelect"
+            element={<StatsCommonWordsSelect />}
           />
           <Route
             path="/practice"
