@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "../styles/buttons.css";
 import "../styles/general.css";
 
-export default function Login({ onLogin }) {
+export default function Login({ onLogin, onLogout }) {
   const [screen, setScreen] = useState("start");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -73,7 +73,7 @@ export default function Login({ onLogin }) {
           <div className="button-container">
             <button
               onClick={() => {
-                onLogin("guest");
+                onLogout();
                 navigate("/home");
               }}
             >

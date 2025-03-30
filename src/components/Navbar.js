@@ -9,7 +9,7 @@ export default function Navbar({ user, learningMode }) {
       <button onClick={() => navigate("/home")}>Home</button>
       <button onClick={() => navigate("/modeSelect")}>Switch Mode</button>
       <button onClick={() => navigate("/profile")}>
-        {user ? `Profile (${user})` : "Profile"}
+        {user ? `Profile (${user})` : "Profile (Guest)"}
       </button>
     </nav>
   );

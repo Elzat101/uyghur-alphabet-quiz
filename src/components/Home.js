@@ -57,7 +57,7 @@ export default function Home() {
           </button>
 
           <button className="back-button" onClick={() => setSelectedMode(null)}>
-            🔙 Back
+            Back
           </button>
         </>
       )}

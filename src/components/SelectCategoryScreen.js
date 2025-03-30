@@ -43,10 +43,7 @@ export default function SelectCategoryScreen() {
         ))}
       </div>
       <div className="mt-6 text-center">
-        <button
-          onClick={() => navigate(-1)}
-          className="text-sm text-gray-600 underline"
-        >
+        <button onClick={() => navigate(-1)} className="back-button">
           Back
         </button>
       </div>

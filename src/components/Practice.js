@@ -38,6 +38,13 @@ export default function Practice({ category, ulyMode, onBack }) {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % dataSet.length);
   };
 
+  const prevCard = () => {
+    setFlipped(false);
+    setCurrentIndex((prevIndex) =>
+      prevIndex === 0 ? dataSet.length - 1 : prevIndex - 1
+    );
+  };
+
   const shuffleCards = () => {
     setFlipped(false);
     const shuffledData = [...dataSet].sort(() => Math.random() - 0.5);
@@ -64,11 +71,34 @@ export default function Practice({ category, ulyMode, onBack }) {
           </p>
         </div>
       </div>
-      <button onClick={nextCard}>Next</button>
-      <button onClick={shuffleCards}>Shuffle</button>
-      <button className="back-button" onClick={() => navigate("/home")}>
-        Back
-      </button>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: "15px",
+          marginTop: "20px",
+        }}
+      >
+        <div style={{ display: "flex", gap: "10px" }}>
+          <button style={{ width: "120px" }} onClick={prevCard}>
+            ←
+          </button>
+          <button style={{ width: "120px" }} onClick={nextCard}>
+            →
+          </button>
+        </div>
+        <button onClick={shuffleCards} style={{ width: "250px" }}>
+          Shuffle
+        </button>
+        <button
+          className="back-button"
+          style={{ marginTop: "-10px", width: "250px" }}
+          onClick={() => navigate("/home")}
+        >
+          Back
+        </button>
+      </div>
     </div>
   );
 }

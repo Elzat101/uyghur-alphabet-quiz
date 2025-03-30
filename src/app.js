@@ -23,6 +23,7 @@ import "./styles/navbar.css";
 import "./styles/learn.css";
 import "./styles/flashcards.css";
 import "./styles/buttons.css";
+import { useLocation } from "react-router-dom";
 
 export default function App() {
   const [user, setUser] = useState(null);
@@ -30,7 +31,10 @@ export default function App() {
     localStorage.getItem("learningMode") || null
   );
   const [stage, setStage] = useState("login");
-  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedCategory] = useState(null);
+  const location = useLocation();
+  const hideNavbarRoutes = ["/login", "/"];
+  const shouldHideNavbar = hideNavbarRoutes.includes(location.pathname);
 
   useEffect(() => {
     const savedUser = localStorage.getItem("loggedInUser");
@@ -59,24 +63,25 @@ export default function App() {
   };
 
   return (
-    <Router>
-      <Navbar />
+    <>
+      {!shouldHideNavbar && (
+        <Navbar
+          user={user}
+          learningMode={learningMode}
+          onNavigate={setStage}
+          onSwitchMode={() => setStage("modeSelect")}
+        />
+      )}
       <div className="app">
-        {stage !== "login" && (
-          <Navbar
-            user={user}
-            learningMode={learningMode}
-            onNavigate={setStage}
-            onSwitchMode={() => setStage("modeSelect")}
-          />
-        )}
-
         <Routes>
-          <Route path="/" element={<Navigate to="/home" />} />
-          <Route path="*" element={<Navigate to="/home" />} />
+          <Route path="/" element={<Navigate to="/login" />} />
+          <Route path="*" element={<Navigate to="/login" />} />
 
           <Route path="/select-category" element={<SelectCategoryScreen />} />
-          <Route path="/login" element={<Login onLogin={handleLogin} />} />
+          <Route
+            path="/login"
+            element={<Login onLogin={handleLogin} onLogout={handleLogout} />}
+          />
 
           <Route path="/learn" element={<Learn />} />
           <Route path="/quiz" element={<Quiz />} />
@@ -142,6 +147,6 @@ export default function App() {
           />
         </Routes>
       </div>
-    </Router>
+    </>
   );
 }

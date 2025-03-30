@@ -4,11 +4,11 @@
 
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: 15px;
   justify-content: center;
   padding: 20px;
-  max-width: 100%;
+  max-width: 1600px;
 }
 
 /* ✅ Large & Medium Screens (5 Columns) */
@@ -33,6 +33,7 @@
   text-align: center;
   font-size: 20px;
   font-weight: bold;
+  min-height: 120px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;

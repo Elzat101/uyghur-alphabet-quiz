@@ -39,6 +39,7 @@ export default function Learn({ onBack }) {
   return (
     <div className="learn">
       <h2>Learn - {category.charAt(0).toUpperCase() + category.slice(1)}</h2>
+
       <div className="grid-container">
         {dataSet.map((item, index) => (
           <div key={index} className="card">
