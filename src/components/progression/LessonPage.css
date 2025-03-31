@@ -1,0 +1,64 @@
+.lesson-container {
+  max-width: 600px;
+  margin: 30px auto;
+  background: #f9f9f9;
+  border-radius: 10px;
+  padding: 30px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  font-family: "Segoe UI", sans-serif;
+}
+
+.lesson-container h2 {
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+}
+
+.lesson-container pre {
+  background-color: #eef2f3;
+  padding: 15px;
+  border-radius: 8px;
+  white-space: pre-wrap;
+  font-size: 1rem;
+}
+
+.lesson-container .question {
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+.lesson-container button {
+  display: block;
+  width: 100%;
+  margin-top: 10px;
+  padding: 12px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background-color: #007bff;
+  color: white;
+  transition: background-color 0.3s ease;
+}
+
+.lesson-container button:hover {
+  background-color: #0056b3;
+}
+
+.lesson-container button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.lesson-container .feedback {
+  margin-top: 15px;
+  font-size: 1.1rem;
+}
+
+.lesson-container .correct {
+  color: green;
+}
+
+.lesson-container .incorrect {
+  color: red;
+}

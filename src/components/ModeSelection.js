@@ -7,9 +7,9 @@ export default function ModeSelection() {
   const handleSelectMode = (mode) => {
     localStorage.setItem("learningMode", mode);
     if (mode === "Uyghur") {
-      navigate("/UyghurHome"); // ✅ Navigates to Uyghur Home
+      navigate("/home"); // ✅ Navigates to Uyghur Home
     } else {
-      navigate("/ULYHome"); // ✅ Navigates to ULY Home
+      navigate("/home"); // ✅ Navigates to ULY Home
     }
   };
 

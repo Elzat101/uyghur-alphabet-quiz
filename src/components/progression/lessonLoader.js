@@ -1,0 +1,33 @@
+import {
+  uly_letters_a_e,
+  uly_letters_f_j,
+  uly_letters_k_o,
+  uly_letters_p_t,
+  uly_letters_u_z,
+  numbers_1_5,
+  numbers_6_10,
+  common_nouns,
+  common_verbs,
+  common_adjectives,
+  basic_greetings,
+  questions,
+  family_phrases,
+  everyday_conversations,
+} from "./lessonData.js";
+
+export const lessonDataMap = {
+  "uly-letters-a-e": uly_letters_a_e,
+  "uly-letters-f-j": uly_letters_f_j,
+  "uly-letters-k-o": uly_letters_k_o,
+  "uly-letters-p-t": uly_letters_p_t,
+  "uly-letters-u-z": uly_letters_u_z,
+  "numbers-1-5": numbers_1_5,
+  "numbers-6-10": numbers_6_10,
+  "common-nouns": common_nouns,
+  "common-verbs": common_verbs,
+  "common-adjectives": common_adjectives,
+  "basic-greetings": basic_greetings,
+  questions: questions,
+  "family-phrases": family_phrases,
+  "everyday-conversations": everyday_conversations,
+};

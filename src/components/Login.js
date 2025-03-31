@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/buttons.css";
 import "../styles/general.css";
+import { setUsername as applyUsername } from "../utils/authUtils";
 
 export default function Login({ onLogin, onLogout }) {
   const [screen, setScreen] = useState("start");
@@ -24,6 +25,7 @@ export default function Login({ onLogin, onLogout }) {
 
   const handleLogin = () => {
     if (users[username] === password) {
+      applyUsername(username); // ✅ Reset guest, load progress
       onLogin(username);
       navigate("/home");
     } else {
@@ -39,6 +41,7 @@ export default function Login({ onLogin, onLogout }) {
     } else {
       users[username] = password;
       localStorage.setItem("users", JSON.stringify(users));
+      applyUsername(username); // ✅ Initialize new progress
       onLogin(username);
       navigate("/home");
     }

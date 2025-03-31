@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { logoutUser } from "../utils/authUtils";
 
 export default function Profile({ user, onLogout }) {
   const navigate = useNavigate();
@@ -13,6 +14,7 @@ export default function Profile({ user, onLogout }) {
           <button onClick={() => navigate("/stats")}>View Stats</button>
           <button
             onClick={() => {
+              logoutUser(); // ✅ Clear user and progress
               onLogout();
               navigate("/home");
             }}

@@ -24,6 +24,8 @@ import "./styles/learn.css";
 import "./styles/flashcards.css";
 import "./styles/buttons.css";
 import { useLocation } from "react-router-dom";
+import LearningTree from "./components/progression/LearningTree";
+import LessonPage from "./components/progression/LessonPage";
 
 export default function App() {
   const [user, setUser] = useState(null);
@@ -87,6 +89,8 @@ export default function App() {
           <Route path="/quiz" element={<Quiz />} />
           <Route path="/practice" element={<Practice />} />
           <Route path="/" element={<ModeSelection />} />
+          <Route path="/progression" element={<LearningTree />} />
+          <Route path="/lesson/:lessonId" element={<LessonPage />} />
 
           <Route
             path="/profile"
