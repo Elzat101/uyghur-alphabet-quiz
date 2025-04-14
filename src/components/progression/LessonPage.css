@@ -1,64 +1,117 @@
 .lesson-container {
   max-width: 600px;
-  margin: 30px auto;
-  background: #f9f9f9;
-  border-radius: 10px;
+  margin: auto;
   padding: 30px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  font-family: "Segoe UI", sans-serif;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.lesson-container h2 {
-  font-size: 1.8rem;
-  margin-bottom: 15px;
-}
-
-.lesson-container pre {
-  background-color: #eef2f3;
-  padding: 15px;
-  border-radius: 8px;
-  white-space: pre-wrap;
-  font-size: 1rem;
-}
-
-.lesson-container .question {
-  font-weight: bold;
-  font-size: 1.2rem;
-  margin-bottom: 10px;
-}
-
-.lesson-container button {
-  display: block;
+.progress-bar {
   width: 100%;
-  margin-top: 10px;
-  padding: 12px;
-  font-size: 1rem;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  background-color: #007bff;
-  color: white;
-  transition: background-color 0.3s ease;
+  height: 10px;
+  background-color: #eee;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+.progress-fill {
+  height: 100%;
+  background-color: #4caf50;
+  border-radius: 5px;
+  transition: width 0.3s ease;
 }
 
-.lesson-container button:hover {
+.flashcard-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+.flashcard {
+  background-color: #007bff;
+  border: 2px solid #0056b3;
+  border-radius: 10px;
+  width: 100px;
+  height: 100px;
+  font-size: 1.5rem;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.flashcard:hover {
   background-color: #0056b3;
 }
-
-.lesson-container button:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
+.emoji {
+  font-size: 2rem;
+}
+.feedback {
+  margin-top: 20px;
+  font-size: 1.2rem;
+}
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 10px;
 }
 
-.lesson-container .feedback {
-  margin-top: 15px;
-  font-size: 1.1rem;
+.option-button,
+.word-bank-option,
+.submit-button,
+.next-button {
+  padding: 10px 16px;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 6px;
+  border: none;
+}
+.option-button {
+  background-color: #007bff;
+  color: white;
+}
+.next-button {
+  background-color: #28a745;
+  color: white;
+}
+.submit-button {
+  background-color: #ffc107;
+  color: black;
+}
+.sentence-box {
+  border: 2px dashed #ccc;
+  padding: 10px;
+  min-height: 60px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  background-color: #f0f8ff;
+  border-radius: 8px;
 }
 
-.lesson-container .correct {
-  color: green;
+.word-bank-option {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  margin: 5px;
+  font-size: 0.95rem;
+  border-radius: 6px;
+  cursor: grab;
+  white-space: nowrap;
+  user-select: none;
+  transition: background-color 0.2s ease;
 }
 
-.lesson-container .incorrect {
-  color: red;
+.word-bank-option:active {
+  cursor: grabbing;
+}
+
+.word-bank-option:hover {
+  background-color: #0056b3;
 }
