@@ -115,3 +115,94 @@
 .word-bank-option:hover {
   background-color: #0056b3;
 }
+
+.correct {
+  background-color: #388e3c; /* darker green */
+  border: 2px solid #1b5e20;
+}
+
+.incorrect {
+  background-color: #c62828; /* darker red */
+  border: 2px solid #8e0000;
+}
+
+.flashcard.correct:hover,
+.option-button.correct:hover {
+  background-color: #2e7d32;
+}
+
+.flashcard.incorrect:hover,
+.option-button.incorrect:hover {
+  background-color: #b71c1c;
+}
+
+.trash-zone-visible {
+  margin-bottom: 15px;
+  background: #f8d7da;
+  color: #721c24;
+  padding: 10px 15px;
+  border: 2px dashed #dc3545;
+  border-radius: 8px;
+  z-index: 1000;
+  font-weight: bold;
+  cursor: grab;
+}
+
+.matching-grid {
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+  margin: 20px 0;
+}
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.matching-left,
+.matching-right {
+  padding: 10px 20px;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+  text-align: center;
+  min-width: 150px;
+}
+.selected {
+  border-color: blue;
+  background-color: #e0f0ff;
+}
+
+.feedback2 {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.matching-left.correct,
+.matching-right.correct {
+  background-color: #388e3c; /* darker green */
+  border: 2px solid #1b5e20;
+}
+
+.matching-left.incorrect,
+.matching-right.incorrect {
+  background-color: #c62828; /* darker red */
+  border: 2px solid #8e0000;
+}
+
+.matching-left.selected,
+.matching-right.selected {
+  background-color: #e0f0ff;
+  border-color: blue;
+}
+
+.matching-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: green; /* This will change to red or green depending on the match */
+  z-index: -1; /* To place the line behind the words */
+}
