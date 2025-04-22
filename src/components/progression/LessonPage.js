@@ -26,6 +26,8 @@ export default function LessonPage() {
   const [correctMatches, setCorrectMatches] = useState([]);
   const [incorrectMatches, setIncorrectMatches] = useState([]);
   const [lockedWords, setLockedWords] = useState([]); // Track locked words
+  const [matchingPerfect, setMatchingPerfect] = useState(true);
+  const [questionsPerfect, setQuestionsPerfect] = useState(true);
 
   const pairs = useMemo(() => {
     if (!lesson || !Array.isArray(lesson.words)) return [];
@@ -49,42 +51,60 @@ export default function LessonPage() {
   };
 
   const handleRightSelect = (word) => {
-    if (lockedWords.includes(word)) return; // Prevent selecting locked words
+    if (lockedWords.includes(word)) return;
 
-    if (selectedLeft) {
-      setSelectedRight(word); // Set the word from the right column
-
-      // Check if the selected left and right words are a match
-      const isCorrectMatch =
-        selectedLeft === lesson.words.find((w) => w.translation === word)?.word;
-
-      // Handle feedback based on correctness
-      if (isCorrectMatch) {
-        setCorrectMatches((prev) => [
-          ...prev,
-          { left: selectedLeft, right: selectedRight },
-        ]);
-        setLockedWords((prev) => [...prev, selectedLeft, selectedRight]); // Lock matched words
-      } else {
-        setIncorrectMatches((prev) => [
-          ...prev,
-          { left: selectedLeft, right: selectedRight },
-        ]);
-      }
-
-      setIsMatched(isCorrectMatch); // Update match status based on correctness
-
-      // Clear the selections after state update
-
-      setSelectedLeft(null);
-      setSelectedRight(null);
+    // If no left word selected yet, just select the right word
+    if (!selectedLeft) {
+      return;
     }
+
+    // Check if this is a correct match
+    const isCorrectMatch = lesson.words.some(
+      (w) => w.word === selectedLeft && w.translation === word
+    );
+
+    if (isCorrectMatch) {
+      // Correct match - lock both words
+      setCorrectMatches((prev) => [
+        ...prev,
+        { left: selectedLeft, right: word },
+      ]);
+      setLockedWords((prev) => [...prev, selectedLeft, word]);
+      setMatchedPairs((prev) => [...prev, { left: selectedLeft, right: word }]);
+    } else {
+      // Incorrect match - show feedback
+      setMatchingPerfect(false);
+      setIncorrectMatches((prev) => [
+        ...prev,
+        { left: selectedLeft, right: word },
+      ]);
+    }
+
+    // Show feedback immediately by setting selectedRight
+    setSelectedRight(word);
+
+    // Clear selections after a short delay
+
+    setSelectedLeft(null);
+    setSelectedRight(null);
   };
+
+  useEffect(() => {
+    if (phase === "matching") {
+      setMatchingPerfect(true);
+      // Reset other matching states...
+    }
+    if (phase === "flashcard" && repeatMode) {
+      setQuestionsPerfect(true);
+    }
+  }, [phase, repeatMode]);
 
   const isMistake = (leftWord, rightWord) =>
     mistakes.some((p) => p.left === leftWord && p.right === rightWord);
 
-  const allMatched = matchedPairs.length === pairs.length;
+  const allMatched = useMemo(() => {
+    return pairs.length > 0 && correctMatches.length === pairs.length;
+  }, [pairs, correctMatches]);
 
   const [answerOptions, setAnswerOptions] = useState([]);
 
@@ -126,42 +146,68 @@ export default function LessonPage() {
   const currentWord = words[currentIndex];
 
   const getEmojiFor = (choice) => {
-    const item = words.find(
+    // Check both the current words and original lesson words
+    const item = [...words, ...lesson.words].find(
       (w) => w.translation === choice || w.word === choice
     );
     return item?.emoji || "❓";
   };
 
   const markMistake = (word) => {
-    setMistakes((prev) => ({ ...prev, [word]: (prev[word] || 0) + 1 }));
+    setMistakes((prev) => [...prev, word]);
     setRepeatQueue((prev) => [...prev, currentWord]);
   };
 
+  // Add this function to clear mistakes
+  const clearMistakes = () => {
+    setMistakes([]);
+    setRepeatQueue([]);
+  };
+
+  useEffect(() => {
+    if (phase === "multiple") {
+      setSentence([]);
+    }
+  }, [phase]);
+
   const next = () => {
-    setFeedback("");
-    setAnswered(false);
-    setSelectedChoice(null);
-    setSentence([]);
+    // ... existing reset code ...
 
     if (currentIndex + 1 < words.length) {
       setCurrentIndex(currentIndex + 1);
-      const nextWord = words[currentIndex + 1];
-      const remaining = words
-        .filter((w) => w !== nextWord)
-        .sort(() => 0.5 - Math.random())
-        .slice(0, 3);
-      const options = [nextWord, ...remaining]
-        .map((w) => w.translation)
-        .sort(() => 0.5 - Math.random());
-      setAnswerOptions(options);
       setPhase("flashcard");
-    } else if (!repeatMode) {
-      // Skip review-intro if no repeat
-      setPhase("matching"); // Move directly to matching phase after completing questions
+    } else if (repeatMode) {
+      if (!matchingPerfect) {
+        // After reviewing questions, redo matching if it wasn't perfect
+        setCorrectMatches([]);
+        setIncorrectMatches([]);
+        setLockedWords([]);
+        setPhase("matching");
+        setMatchingPerfect(true); // Reset to perfect by default
+        setRepeatMode(false);
+      } else {
+        // Everything was perfect - complete lesson
+        setCompleted(true);
+      }
     } else {
-      setPhase("review-intro"); // Review phase when necessary
+      // Normal flow - go to matching
+      setPhase("matching");
     }
   };
+
+  useEffect(() => {
+    if (!lesson || !words.length) return;
+
+    // Ensure currentWord exists before rendering
+    if (!words[currentIndex]) {
+      setCurrentIndex(0); // Reset to first word if invalid index
+    }
+  }, [words, currentIndex, lesson]);
+
+  // Update your loading check to include words validation
+  if (!lesson || !words.length || !words[currentIndex]) {
+    return <div className="lesson-container">Loading lesson...</div>;
+  }
 
   const getWrongChoices = (correct) => {
     const pool = words.filter((w) => w.translation !== correct);
@@ -179,7 +225,22 @@ export default function LessonPage() {
       setFeedback("✅ Correct!");
     } else {
       setFeedback(`❌ Incorrect. Correct answer: ${currentWord.translation}`);
+      setQuestionsPerfect(false);
       markMistake(currentWord.word);
+    }
+  };
+  const handleMatchingCompletion = () => {
+    if (mistakes.length > 0 || !matchingPerfect) {
+      // Clear all interactive states
+      setSentence([]);
+      setSelectedChoice(null);
+      setAnswered(false);
+      setFeedback("");
+
+      // Start review session
+      setPhase("review-intro");
+    } else {
+      setCompleted(true);
     }
   };
 
@@ -433,47 +494,48 @@ export default function LessonPage() {
             </div>
 
             <div className="column">
-              {right.map((trans) => (
-                <div
-                  key={trans}
-                  className={`matching-right 
-        ${selectedRight === trans ? "selected" : ""}
-        ${
-          correctMatches.some((match) => match.right === trans) ? "correct" : ""
-        }
-        ${
-          incorrectMatches.some((match) => match.right === trans)
-            ? "incorrect"
-            : ""
-        }`}
-                  style={getLineStyle(selectedLeft, trans)} // Add green/red line based on correctness
-                  onClick={() => handleRightSelect(trans)} // Select word from the right side
-                >
-                  {trans}
-                </div>
-              ))}
+              {right.map((trans) => {
+                const isSelected = selectedRight === trans;
+                const isCorrect = correctMatches.some((m) => m.right === trans);
+                const isIncorrect = incorrectMatches.some(
+                  (m) => m.right === trans
+                );
+                const isLocked = lockedWords.includes(trans);
+
+                // Determine the most relevant state to show
+                let stateClass = "";
+                if (isSelected) {
+                  // Check if this selection is correct/incorrect
+                  const currentMatch = { left: selectedLeft, right: trans };
+                  const isCurrentCorrect = lesson.words.some(
+                    (w) => w.word === selectedLeft && w.translation === trans
+                  );
+                  stateClass = isCurrentCorrect ? "correct" : "incorrect";
+                } else if (isCorrect) {
+                  stateClass = "correct";
+                } else if (isIncorrect) {
+                  stateClass = "incorrect";
+                }
+
+                return (
+                  <div
+                    key={trans}
+                    className={`matching-right ${stateClass} ${
+                      isLocked ? "locked" : ""
+                    }`}
+                    onClick={() => handleRightSelect(trans)}
+                  >
+                    {trans}
+                  </div>
+                );
+              })}
             </div>
           </div>
           {allMatched && (
-            <button
-              onClick={() => {
-                if (mistakes.length > 0) {
-                  setWords(
-                    pairs.filter((pair) =>
-                      mistakes.some((m) => m.left === pair.word)
-                    )
-                  );
-                  setRepeatQueue([]);
-                  setRepeatMode(true);
-                  setCurrentIndex(0);
-                  setPhase("flashcard");
-                } else {
-                  setPhase("review-intro");
-                }
-              }}
-              className="next-button"
-            >
-              {mistakes.length > 0 ? "Redo Mistakes" : "Continue"}
+            <button onClick={handleMatchingCompletion} className="next-button">
+              {mistakes.length > 0 || !matchingPerfect
+                ? "Review Mistakes"
+                : "Finish Lesson"}
             </button>
           )}
         </>
@@ -492,6 +554,43 @@ export default function LessonPage() {
         >
           Next
         </button>
+      )}
+      {phase === "review-intro" && (
+        <div className="review-intro-container">
+          <h2>🔁 Review Time</h2>
+          <p>
+            {matchingPerfect
+              ? "Let's practice the questions you missed"
+              : "We'll practice missed questions then try matching again"}
+          </p>
+          <button
+            className="next-button"
+            onClick={() => {
+              const wordsToReview = lesson.words.filter((wordObj) =>
+                mistakes.includes(wordObj.word)
+              );
+
+              if (wordsToReview.length > 0) {
+                setWords(wordsToReview);
+                setRepeatMode(true);
+                setCurrentIndex(0);
+                setPhase("flashcard");
+              } else {
+                // No missed questions — go directly to matching review
+                setCorrectMatches([]);
+                setIncorrectMatches([]);
+                setLockedWords([]);
+                setRepeatMode(false);
+                setCurrentIndex(0);
+                setPhase("matching");
+              }
+
+              clearMistakes();
+            }}
+          >
+            Start Practice
+          </button>
+        </div>
       )}
     </div>
   );

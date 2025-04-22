@@ -206,3 +206,31 @@
   background-color: green; /* This will change to red or green depending on the match */
   z-index: -1; /* To place the line behind the words */
 }
+
+.review-intro-container {
+  text-align: center;
+  padding: 20px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.review-intro-container h2 {
+  color: #ff9800;
+  margin-bottom: 15px;
+}
+
+.review-intro-container p {
+  margin-bottom: 25px;
+  font-size: 1.1rem;
+}
+
+.mistakes-list {
+  text-align: left;
+  margin: 20px auto;
+  max-width: 300px;
+}
+
+.mistakes-list li {
+  margin: 8px 0;
+  font-size: 1.1rem;
+}
