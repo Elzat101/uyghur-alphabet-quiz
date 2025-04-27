@@ -49,6 +49,7 @@
   flex-direction: column;
   align-items: center;
   position: relative;
+  gap: 20px;
 }
 
 .step-wrapper {
@@ -92,6 +93,7 @@
 .step-node.current {
   background-color: #4caf50;
   color: white;
+  transform: scale(1.8);
 }
 
 .step-node.done {
@@ -102,4 +104,147 @@
 .step-link {
   text-decoration: none;
   color: inherit;
+}
+
+.step-wrapper.step-left {
+  align-items: flex-start;
+  transform: translateX(-20px);
+}
+
+.step-wrapper.step-right {
+  align-items: flex-end;
+  transform: translateX(20px);
+}
+
+.curve-line {
+  width: 40px;
+  height: 40px;
+  border: 2px solid #ccc;
+  border-top: none;
+  border-left: none;
+  background: transparent;
+  margin: -10px 0;
+  z-index: 0;
+}
+
+.curve-left {
+  border-radius: 0 0 40px 0;
+  align-self: flex-start;
+  transform: translateX(-20px);
+}
+
+.curve-right {
+  border-radius: 0 0 0 40px;
+  align-self: flex-end;
+  transform: translateX(20px);
+}
+
+/* Centered */
+.shift-0 {
+  transform: translateX(0px);
+  align-items: center;
+}
+
+/* Centered */
+.shift-0 {
+  transform: translateX(0px);
+  align-items: center;
+}
+
+/* Left curves */
+.shift--1 {
+  transform: translateX(-20px);
+  align-items: flex-start;
+}
+.shift--2 {
+  transform: translateX(-40px);
+  align-items: flex-start;
+}
+
+/* Right curves */
+.shift-1 {
+  transform: translateX(20px);
+  align-items: flex-end;
+}
+.shift-2 {
+  transform: translateX(40px);
+  align-items: flex-end;
+}
+.shift-3 {
+  transform: translateX(60px);
+  align-items: flex-end;
+}
+
+.line {
+  width: 3px;
+  height: 40px;
+  background-color: #ccc;
+  margin: 2px 0;
+  z-index: 1;
+  transition: transform 0.3s;
+}
+
+/* Line for center steps */
+.line-center {
+  transform: rotate(0deg);
+  align-self: center;
+}
+
+/* Line leaning left */
+.line-left {
+  transform: rotate(-15deg);
+  align-self: flex-start;
+  margin-left: 10px;
+}
+
+/* Line leaning right */
+.line-right {
+  transform: rotate(15deg);
+  align-self: flex-end;
+  margin-right: 10px;
+}
+
+.step-node {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  font-size: 1rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  margin-bottom: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease;
+  animation: bounceIn 0.6s ease-out both, wave 4s ease-in-out infinite;
+  animation-delay: calc(var(--i) * 0.1s), calc(var(--i) * 0.3s); /* First bounce, then stagger wave */
+  animation-fill-mode: forwards, both;
+}
+/* Bounce animation */
+@keyframes bounceIn {
+  0% {
+    transform: scale(0.8) translateX(0px);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.1) translateX(0px);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) translateX(0px);
+  }
+}
+
+/* Wave animation */
+@keyframes wave {
+  0% {
+    transform: translateY(-1.5px);
+  }
+  50% {
+    transform: translateY(1.5px);
+  }
+  100% {
+    transform: translateY(-1.5px);
+  }
 }
