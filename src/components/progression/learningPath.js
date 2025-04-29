@@ -7,6 +7,7 @@ export const learningPath = [
       { id: "family-phrases" },
       { id: "describing-people" },
       { id: "emotions" },
+      { id: "quiz-beginner-1", isQuiz: true }, // ✅ Added Quiz
     ],
   },
   {
@@ -17,6 +18,7 @@ export const learningPath = [
       { id: "asking-how-are-you" },
       { id: "yes-no-answers" },
       { id: "introducing-yourself" },
+      { id: "quiz-beginner-2", isQuiz: true }, // ✅ Added Quiz
     ],
   },
   {
@@ -27,12 +29,18 @@ export const learningPath = [
       { id: "numbers-6-10" },
       { id: "days-of-the-week" },
       { id: "telling-time" },
+      { id: "quiz-beginner-3", isQuiz: true }, // ✅ Added Quiz
     ],
   },
   {
     id: "beginner-4",
     name: "🎨 Colors & Shapes",
-    steps: [{ id: "colors" }, { id: "shapes" }, { id: "describing-objects" }],
+    steps: [
+      { id: "colors" },
+      { id: "shapes" },
+      { id: "describing-objects" },
+      { id: "quiz-beginner-4", isQuiz: true }, // ✅ Added Quiz
+    ],
   },
   {
     id: "beginner-5",
@@ -41,6 +49,7 @@ export const learningPath = [
       { id: "household-items" },
       { id: "rooms-in-a-house" },
       { id: "daily-routines" },
+      { id: "quiz-beginner-5", isQuiz: true }, // ✅ Added Quiz
     ],
   },
 ];

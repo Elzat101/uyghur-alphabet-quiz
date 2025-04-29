@@ -46,23 +46,33 @@ const LearningTree = () => {
 
                 return (
                   <div className={`step-wrapper ${shiftClass}`} key={step.id}>
-                    <div
+                    <Link
+                      to={
+                        isDone || isCurrent
+                          ? step.isQuiz
+                            ? `/unitquiz/${step.id}`
+                            : `/lesson/${step.id}`
+                          : "#"
+                      }
                       className={`step-node ${
                         isDone ? "done" : isCurrent ? "current" : "locked"
-                      }`}
+                      } ${step.isQuiz ? "quiz-node" : ""}`}
+                      style={{
+                        pointerEvents: isDone || isCurrent ? "auto" : "none",
+                      }}
                     >
                       <div className="wave-inner">
-                        {isCurrent ? (
-                          <Link to={`/lesson/${step.id}`} className="step-link">
-                            Start
-                          </Link>
-                        ) : isDone ? (
-                          <span className="step-link">✓</span>
-                        ) : (
-                          <span className="step-link">🔒</span>
-                        )}
+                        {isDone
+                          ? "✓"
+                          : isCurrent
+                          ? step.isQuiz
+                            ? "Quiz"
+                            : "Start"
+                          : step.isQuiz
+                          ? "🏆"
+                          : "🔒"}
                       </div>
-                    </div>
+                    </Link>
                   </div>
                 );
               })}

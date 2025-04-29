@@ -234,3 +234,17 @@
   margin: 8px 0;
   font-size: 1.1rem;
 }
+
+.word-bank-option.selected {
+  background-color: #ffd54f; /* bright amber */
+  color: black;
+  font-weight: bold;
+  border: 2px solid #ffa000;
+}
+
+.sentence-word.selected {
+  background-color: #ffd54f;
+  color: black;
+  font-weight: bold;
+  border: 2px solid #ffa000;
+}

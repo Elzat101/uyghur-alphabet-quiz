@@ -23,6 +23,8 @@ export default function LessonPage() {
   const [matchedPairs, setMatchedPairs] = useState([]);
   const [isMatched, setIsMatched] = useState(false); // Track if the pair
   // is correct
+  const [selectedWord, setSelectedWord] = useState(null);
+
   const [correctMatches, setCorrectMatches] = useState([]);
   const [incorrectMatches, setIncorrectMatches] = useState([]);
   const [lockedWords, setLockedWords] = useState([]); // Track locked words
@@ -377,8 +379,16 @@ export default function LessonPage() {
             <strong>"{currentWord.word}"</strong>
           </p>
 
+          {/* Trash zone */}
           <div
             className="trash-zone-visible"
+            onClick={() => {
+              if (selectedWord && sentence.includes(selectedWord)) {
+                const updated = sentence.filter((w) => w !== selectedWord);
+                setSentence(updated);
+                setSelectedWord(null);
+              }
+            }}
             onDragOver={(e) => e.preventDefault()}
             onDrop={(e) => {
               const index = Number(e.dataTransfer.getData("index"));
@@ -389,26 +399,28 @@ export default function LessonPage() {
               }
             }}
           >
-            🗑️ Drop here to remove word
+            🗑️ Drop/Tap here to remove word
           </div>
 
+          {/* Sentence box */}
           <div
             className="sentence-box"
+            onClick={() => {
+              if (selectedWord && !sentence.includes(selectedWord)) {
+                setSentence([...sentence, selectedWord]);
+                setSelectedWord(null);
+              }
+            }}
             onDragOver={(e) => e.preventDefault()}
             onDrop={(e) => {
               const word = e.dataTransfer.getData("text");
               const fromIndex = Number(e.dataTransfer.getData("index"));
-              const dropTarget = e.currentTarget;
-              const dropInside = dropTarget.contains(
-                document.elementFromPoint(e.clientX, e.clientY)
-              );
-              const updated = [...sentence];
-
-              if (!dropInside && !isNaN(fromIndex)) {
-                // Word dragged out of sentence box
+              if (!isNaN(fromIndex)) {
+                // dragged from inside sentence, reposition
+                const updated = [...sentence];
                 updated.splice(fromIndex, 1);
                 setSentence(updated);
-              } else if (!sentence.includes(word)) {
+              } else if (word && !sentence.includes(word)) {
                 setSentence([...sentence, word]);
               }
             }}
@@ -416,8 +428,18 @@ export default function LessonPage() {
             {sentence.map((word, index) => (
               <span
                 key={index}
-                className="word-bank-option"
+                className={`word-bank-option sentence-word ${
+                  selectedWord === word ? "selected" : ""
+                }`}
                 draggable
+                onClick={(e) => {
+                  e.stopPropagation(); // Prevent adding again when tapping inside sentence
+                  if (selectedWord === word) {
+                    setSelectedWord(null);
+                  } else {
+                    setSelectedWord(word);
+                  }
+                }}
                 onDragStart={(e) => {
                   e.dataTransfer.setData("text", word);
                   e.dataTransfer.setData("index", index);
@@ -438,6 +460,7 @@ export default function LessonPage() {
             ))}
           </div>
 
+          {/* Word bank options */}
           <div className="button-row">
             {Array.from(
               new Set(
@@ -450,8 +473,17 @@ export default function LessonPage() {
               .map((word, index) => (
                 <div
                   key={index}
-                  className="word-bank-option"
+                  className={`word-bank-option ${
+                    selectedWord === word ? "selected" : ""
+                  }`}
                   draggable
+                  onClick={() => {
+                    if (selectedWord === word) {
+                      setSelectedWord(null);
+                    } else {
+                      setSelectedWord(word);
+                    }
+                  }}
                   onDragStart={(e) => e.dataTransfer.setData("text", word)}
                 >
                   {word}
