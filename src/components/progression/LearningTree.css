@@ -252,9 +252,14 @@
 
 /* Different look for Quiz nodes */
 .quiz-node {
-  background: linear-gradient(135deg, gold, orange);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 60, 0, 0.85),
+    rgba(255, 0, 0, 0.9)
+  );
   color: black;
-  border: 2px solid #b8860b;
+  border: 2px solid #000000;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 /* If you want locked quizzes to still look special */

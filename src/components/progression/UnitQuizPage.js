@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { learningPath } from "./learningPath";
 import { lessonDataMap } from "./lessonLoader";
@@ -15,35 +15,87 @@ export default function UnitQuizPage() {
   const [passed, setPassed] = useState(false);
   const [mistakes, setMistakes] = useState([]);
   const [reviewMode, setReviewMode] = useState(false);
+  const [answered, setAnswered] = useState(false);
+  const questionsRef = useRef([]);
+  const [options, setOptions] = useState([]);
+  const currentQuestion = questions[currentIndex];
+  const handleNext = () => {
+    const isWrong = selected !== currentQuestion.translation;
+
+    if (isWrong) {
+      setMistakes((prev) => [
+        ...prev,
+        {
+          question: currentQuestion.word,
+          correct: currentQuestion.translation,
+        },
+      ]);
+      if (lives === 1) {
+        setReviewMode(true);
+        return;
+      }
+      setLives((prev) => prev - 1);
+    }
+
+    if (currentIndex + 1 >= questions.length) {
+      setFinished(true);
+      setPassed(lives - (isWrong ? 1 : 0) > 0);
+    } else {
+      setCurrentIndex((prev) => prev + 1);
+      setSelected(null);
+      setAnswered(false);
+    }
+  };
 
   useEffect(() => {
-    const unit = learningPath.find((u) => u.id === quizId.replace("quiz-", ""));
-    if (!unit) return;
+    if (!currentQuestion) return;
 
-    let allWords = [];
-    unit.steps.forEach((step) => {
-      if (!step.isQuiz) {
-        const lesson = lessonDataMap[step.id];
-        if (lesson?.words) {
-          allWords = allWords.concat(lesson.words);
+    const wrongChoices = questions
+      .filter((q) => q.translation !== currentQuestion.translation)
+      .sort(() => 0.5 - Math.random())
+      .slice(0, 3)
+      .map((q) => q.translation);
+
+    const combined = [...wrongChoices, currentQuestion.translation].sort(
+      () => 0.5 - Math.random()
+    );
+
+    setOptions(combined);
+  }, [currentQuestion, questions]);
+
+  useEffect(() => {
+    if (questionsRef.current.length === 0) {
+      const unit = learningPath.find(
+        (u) => u.id === quizId.replace("quiz-", "")
+      );
+      if (!unit) return;
+
+      let allWords = [];
+      unit.steps.forEach((step) => {
+        if (!step.isQuiz) {
+          const lesson = lessonDataMap[step.id];
+          if (lesson?.words) {
+            allWords = allWords.concat(lesson.words);
+          }
         }
-      }
-    });
+      });
 
-    const shuffled = [...allWords].sort(() => 0.5 - Math.random()).slice(0, 20);
-
-    setQuestions(shuffled);
+      const shuffled = [...allWords]
+        .sort(() => 0.5 - Math.random())
+        .slice(0, 20);
+      questionsRef.current = shuffled;
+      setQuestions(shuffled);
+    } else {
+      setQuestions(questionsRef.current);
+    }
   }, [quizId]);
 
-  const currentQuestion = questions[currentIndex];
-
   const handleAnswer = (choice) => {
-    if (!currentQuestion) return;
+    if (!currentQuestion || answered) return; // prevent double-clicks
     setSelected(choice);
+    setAnswered(true);
 
-    let loseLife = false;
     if (choice !== currentQuestion.translation) {
-      loseLife = true;
       setMistakes((prev) => [
         ...prev,
         {
@@ -52,19 +104,6 @@ export default function UnitQuizPage() {
         },
       ]);
     }
-
-    setTimeout(() => {
-      if (loseLife && lives === 1) {
-        setReviewMode(true);
-      } else if (currentIndex + 1 >= questions.length) {
-        setFinished(true);
-        setPassed(lives - (loseLife ? 1 : 0) > 0);
-      } else {
-        setCurrentIndex((prev) => prev + 1);
-        if (loseLife) setLives((prev) => prev - 1);
-        setSelected(null);
-      }
-    }, 1000);
   };
 
   const handleContinueAfterReview = () => {
@@ -117,20 +156,6 @@ export default function UnitQuizPage() {
     );
   }
 
-  const getOptions = () => {
-    const wrongChoices = questions
-      .filter((q) => q.translation !== currentQuestion.translation)
-      .sort(() => 0.5 - Math.random())
-      .slice(0, 3)
-      .map((q) => q.translation);
-
-    return [...wrongChoices, currentQuestion.translation].sort(
-      () => 0.5 - Math.random()
-    );
-  };
-
-  const options = getOptions();
-
   return (
     <div className="lesson-container">
       {lives !== Infinity && (
@@ -155,19 +180,27 @@ export default function UnitQuizPage() {
           <button
             key={choice}
             className={`option-button ${
-              selected === choice
+              answered
                 ? choice === currentQuestion.translation
                   ? "correct"
-                  : "incorrect"
+                  : selected === choice
+                  ? "incorrect"
+                  : ""
                 : ""
             }`}
             onClick={() => handleAnswer(choice)}
-            disabled={selected !== null}
+            disabled={answered}
           >
             {choice}
           </button>
         ))}
       </div>
+
+      {answered && (
+        <button className="next-button" onClick={handleNext}>
+          Next
+        </button>
+      )}
     </div>
   );
 }

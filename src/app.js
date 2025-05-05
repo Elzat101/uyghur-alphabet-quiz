@@ -26,6 +26,7 @@ import "./styles/buttons.css";
 import { useLocation } from "react-router-dom";
 import LearningTree from "./components/progression/LearningTree";
 import LessonPage from "./components/progression/LessonPage";
+import UnitQuizPage from "./components/progression/UnitQuizPage";
 
 export default function App() {
   const [user, setUser] = useState(null);
@@ -84,7 +85,7 @@ export default function App() {
             path="/login"
             element={<Login onLogin={handleLogin} onLogout={handleLogout} />}
           />
-
+          <Route path="/unitquiz/:quizId" element={<UnitQuizPage />} />
           <Route path="/learn" element={<Learn />} />
           <Route path="/quiz" element={<Quiz />} />
           <Route path="/practice" element={<Practice />} />

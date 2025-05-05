@@ -30,6 +30,7 @@ export default function LessonPage() {
   const [lockedWords, setLockedWords] = useState([]); // Track locked words
   const [matchingPerfect, setMatchingPerfect] = useState(true);
   const [questionsPerfect, setQuestionsPerfect] = useState(true);
+  const [wordBank, setWordBank] = useState([]);
 
   const pairs = useMemo(() => {
     if (!lesson || !Array.isArray(lesson.words)) return [];
@@ -90,6 +91,16 @@ export default function LessonPage() {
     setSelectedLeft(null);
     setSelectedRight(null);
   };
+
+  useEffect(() => {
+    if (phase === "type") {
+      const uniqueWords = Array.from(
+        new Set(lesson.words.flatMap((w) => w.translation.split(" ")))
+      );
+      const shuffled = [...uniqueWords].sort(() => 0.5 - Math.random());
+      setWordBank(shuffled);
+    }
+  }, [phase, lesson]);
 
   useEffect(() => {
     if (phase === "matching") {
@@ -414,13 +425,12 @@ export default function LessonPage() {
             onDragOver={(e) => e.preventDefault()}
             onDrop={(e) => {
               const word = e.dataTransfer.getData("text");
-              const fromIndex = Number(e.dataTransfer.getData("index"));
-              if (!isNaN(fromIndex)) {
-                // dragged from inside sentence, reposition
-                const updated = [...sentence];
-                updated.splice(fromIndex, 1);
-                setSentence(updated);
-              } else if (word && !sentence.includes(word)) {
+              const fromIndex = e.dataTransfer.getData("index");
+
+              // If dragging from sentence, ignore here — handled by span
+              if (fromIndex !== "") return;
+
+              if (word && !sentence.includes(word)) {
                 setSentence([...sentence, word]);
               }
             }}
@@ -462,14 +472,8 @@ export default function LessonPage() {
 
           {/* Word bank options */}
           <div className="button-row">
-            {Array.from(
-              new Set(
-                lesson.words
-                  .flatMap((w) => w.translation.split(" "))
-                  .filter((w) => !sentence.includes(w))
-              )
-            )
-              .sort(() => 0.5 - Math.random())
+            {wordBank
+              .filter((w) => !sentence.includes(w))
               .map((word, index) => (
                 <div
                   key={index}
