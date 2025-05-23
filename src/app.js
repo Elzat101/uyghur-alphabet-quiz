@@ -27,6 +27,8 @@ import { useLocation } from "react-router-dom";
 import LearningTree from "./components/progression/LearningTree";
 import LessonPage from "./components/progression/LessonPage";
 import UnitQuizPage from "./components/progression/UnitQuizPage";
+import SelectUnit from "./components/SelectUnit";
+import SelectLesson from "./components/SelectLesson";
 
 export default function App() {
   const [user, setUser] = useState(null);
@@ -117,6 +119,9 @@ export default function App() {
             element={<ModeSelection onSelectMode={handleModeSelect} />}
           />
           <Route path="/home" element={<Home />} />
+
+          <Route path="/select-unit" element={<SelectUnit />} />
+          <Route path="/select-lesson" element={<SelectLesson />} />
 
           {/* Uyghur Mode */}
           <Route

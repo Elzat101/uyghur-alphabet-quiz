@@ -5,6 +5,7 @@ import { commonWords } from "../data/commonWords";
 import { ULYNumbers } from "../data/ULYNumbers";
 import { ULYCommonWords } from "../data/ULYCommonWords";
 import { useNavigate } from "react-router-dom";
+import { lessonDataMap } from "./progression/lessonLoader";
 
 export default function Practice({ category, ulyMode, onBack }) {
   const navigate = useNavigate();
@@ -17,21 +18,20 @@ export default function Practice({ category, ulyMode, onBack }) {
 
   // ✅ **Use `useEffect` to update dataset whenever `ulyMode` or `selectedCategory` changes**
   useEffect(() => {
-    let newDataSet = [];
-    if (learningMode === "Uyghur") {
-      if (selectedCategory === "letters") newDataSet = [...alphabetQuestions];
-      if (selectedCategory === "numbers") newDataSet = [...numbersData];
-      if (selectedCategory === "commonWords") newDataSet = [...commonWords];
-    } else {
-      if (selectedCategory === "numbers") newDataSet = [...ULYNumbers];
-      if (ULYCommonWords[selectedCategory]) {
-        newDataSet = [...ULYCommonWords[selectedCategory]];
-      }
-    }
+    const selectedLessonId = localStorage.getItem("selectedLesson");
+    const learningMode = localStorage.getItem("learningMode") || "Uyghur";
 
-    setDataSet(newDataSet);
-    setCurrentIndex(0); // ✅ Reset index when dataset changes
-  }, [ulyMode, learningMode, selectedCategory]); // ✅ Runs whenever ULY mode or category changes
+    const lesson = lessonDataMap[selectedLessonId];
+
+    if (lesson && lesson.words) {
+      const formatted = lesson.words.map((w) => ({
+        ...w,
+        questionText: w.uyghur || w.uly || w.word,
+        correctAnswer: w.correctAnswer || w.translation,
+      }));
+      setDataSet(formatted);
+    }
+  }, []);
 
   const nextCard = () => {
     setFlipped(false);

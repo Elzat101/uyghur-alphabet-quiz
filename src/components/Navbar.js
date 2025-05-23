@@ -27,7 +27,7 @@ export default function Navbar({ user }) {
       </div>
 
       <div className={`navbar-menu ${isOpen ? "open" : ""}`}>
-        <button onClick={() => handleNavClick("/home")}>Home</button>
+        <button onClick={() => handleNavClick("/home")}>Free Learn</button>
         <button onClick={() => handleNavClick("/progression")}>
           Progression
         </button>

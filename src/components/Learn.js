@@ -5,6 +5,7 @@ import { commonWords } from "../data/commonWords";
 import { ULYNumbers } from "../data/ULYNumbers";
 import { ULYCommonWords } from "../data/ULYCommonWords";
 import { useNavigate } from "react-router-dom";
+import { lessonDataMap } from "./progression/lessonLoader";
 
 export default function Learn({ onBack }) {
   const navigate = useNavigate();
@@ -13,26 +14,20 @@ export default function Learn({ onBack }) {
   const [dataSet, setDataSet] = useState([]);
 
   useEffect(() => {
-    const selectedCategory =
-      localStorage.getItem("selectedCategory") || "numbers";
+    const selectedLessonId = localStorage.getItem("selectedLesson");
     const learningMode = localStorage.getItem("learningMode") || "Uyghur";
-    setCategory(selectedCategory);
-    setUlyMode(learningMode === "ULY");
 
-    let newDataSet = [];
-    if (!ulyMode) {
-      if (selectedCategory === "letters") newDataSet = [...alphabetQuestions];
-      if (selectedCategory === "numbers") newDataSet = [...numbersData];
-      if (selectedCategory === "commonWords") newDataSet = [...commonWords];
-    } else {
-      if (selectedCategory === "numbers") newDataSet = [...ULYNumbers];
-      else if (ULYCommonWords[selectedCategory]) {
-        newDataSet = [...ULYCommonWords[selectedCategory]];
-      }
+    const lesson = lessonDataMap[selectedLessonId];
+
+    if (lesson && lesson.words) {
+      const formatted = lesson.words.map((w) => ({
+        ...w,
+        questionText: w.uyghur || w.uly || w.word,
+        correctAnswer: w.correctAnswer || w.translation,
+      }));
+      setDataSet(formatted);
     }
-
-    setDataSet(newDataSet);
-  }, [ulyMode]);
+  }, []);
 
   if (dataSet.length === 0) return <p>Loading...</p>;
 

@@ -5,6 +5,7 @@ import { commonWords } from "../data/commonWords";
 import { ULYNumbers } from "../data/ULYNumbers";
 import { ULYCommonWords } from "../data/ULYCommonWords";
 import { useNavigate } from "react-router-dom";
+import { lessonDataMap } from "./progression/lessonLoader";
 
 export default function Quiz({ category, onBack }) {
   const navigate = useNavigate();
@@ -23,54 +24,38 @@ export default function Quiz({ category, onBack }) {
     localStorage.getItem("selectedCategory") || "numbers";
 
   useEffect(() => {
-    let selectedQuestions = [];
-    let answerPool = [];
+    const selectedLessonId = localStorage.getItem("selectedLesson");
 
-    if (learningMode === "Uyghur") {
-      if (selectedCategory === "letters") {
-        selectedQuestions = [...alphabetQuestions];
-        answerPool = alphabetQuestions.map((q) => q.correctAnswer);
-      }
-      if (selectedCategory === "numbers") {
-        selectedQuestions = [...numbersData];
-        answerPool = numbersData.map((q) => q.correctAnswer);
-      }
-      if (selectedCategory === "commonWords") {
-        selectedQuestions = [...commonWords];
-        answerPool = commonWords.map((q) => q.correctAnswer);
-      }
-    } else {
-      if (selectedCategory === "numbers") {
-        selectedQuestions = [...ULYNumbers];
-        answerPool = ULYNumbers.map((q) => q.correctAnswer);
-      }
-      if (ULYCommonWords[selectedCategory]) {
-        selectedQuestions = [...ULYCommonWords[selectedCategory]];
-        answerPool = ULYCommonWords[selectedCategory].map(
-          (q) => q.correctAnswer
-        );
-      }
-    }
+    const lesson = lessonDataMap[selectedLessonId];
 
-    selectedQuestions = selectedQuestions.sort(() => Math.random() - 0.5);
+    if (!lesson || !lesson.words) return;
 
-    if (selectedAmount) {
-      selectedQuestions = selectedQuestions.slice(0, selectedAmount);
-    }
+    // ✅ Define formatted first
+    const formatted = lesson.words.map((w) => ({
+      ...w,
+      questionText: w.uyghur || w.uly || w.word,
+      correctAnswer: w.correctAnswer || w.translation,
+    }));
 
-    setQuestions(
-      selectedQuestions.map((q) => ({
+    // ✅ Then build answer pool
+    const answerPool = formatted.map((q) => q.correctAnswer);
+
+    const generateAnswerChoices = (correctAnswer) => {
+      let wrongAnswers = answerPool.filter((a) => a !== correctAnswer);
+      wrongAnswers = wrongAnswers.sort(() => Math.random() - 0.5).slice(0, 3);
+      return [...wrongAnswers, correctAnswer].sort(() => Math.random() - 0.5);
+    };
+
+    // ✅ Now shuffle and assign options
+    const shuffledQuestions = formatted
+      .sort(() => Math.random() - 0.5)
+      .map((q) => ({
         ...q,
-        options: generateAnswerChoices(q.correctAnswer, answerPool),
-      }))
-    );
-  }, [selectedCategory, selectedAmount, ulyMode, learningMode]);
+        options: generateAnswerChoices(q.correctAnswer),
+      }));
 
-  const generateAnswerChoices = (correctAnswer, answerPool) => {
-    let wrongAnswers = answerPool.filter((a) => a !== correctAnswer);
-    wrongAnswers = wrongAnswers.sort(() => Math.random() - 0.5).slice(0, 3);
-    return [...wrongAnswers, correctAnswer].sort(() => Math.random() - 0.5);
-  };
+    setQuestions(shuffledQuestions);
+  }, []);
 
   const loadStats = () => {
     const storedStats = localStorage.getItem("quizStats");
